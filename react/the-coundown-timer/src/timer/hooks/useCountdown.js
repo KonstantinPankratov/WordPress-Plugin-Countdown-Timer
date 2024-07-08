@@ -13,7 +13,7 @@ const useCountdown = (targetDate) => {
 		}, 1000);
 
 		return () => clearInterval(interval);
-	}, [countdowndate]);
+	}, [countdowndate, targetDate]);
 
 	return getReturnValues(countdown);
 };
