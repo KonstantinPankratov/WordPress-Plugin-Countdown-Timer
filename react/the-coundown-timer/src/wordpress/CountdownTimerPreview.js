@@ -1,10 +1,11 @@
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import Draggable from 'react-draggable';
 import CountdownTimer from '../timer/CountdownTimer';
-import { Card, CardBody, CardHeader } from '@wordpress/components';
+import { Card, CardBody, CardFooter, CardHeader } from '@wordpress/components';
 
-const CountdownTimerPreview = ({ settings }) => {
+const CountdownTimerPreview = ({ settings, preview }) => {
     const [isDragging, setIsDragging] = useState(false);
+    const [isDatetimeValid, setIsDatetimeValid] = useState();
 
     const handleStart = () => {
         setIsDragging(true);
@@ -14,22 +15,29 @@ const CountdownTimerPreview = ({ settings }) => {
         setIsDragging(false);
     };
 
+    useEffect(() => {
+        setIsDatetimeValid(
+            new Date(settings.datetime) > new Date()
+        )
+    }, [settings.datetime])
+    
     return (
         <Draggable
-        onStart={handleStart}
-        onStop={handleStop}
-        bounds='body'>
+            onStart={handleStart}
+            onStop={handleStop}
+            defaultPosition={{x: 0, y: 0}}
+            bounds=".the-countdown-timer-editor-component">
             <Card style={{
-                // position: 'absolute',
+                position: 'fixed',
                 display: 'inline-block',
-                marginBottom: '20px',
                 cursor: isDragging ? 'grabbing' : 'grab',
                 zIndex: 9999
             }}>
                 <CardHeader>Preview <small>drag &amp; drop me</small></CardHeader>
-                <CardBody>
+                <CardBody style={{ backgroundColor: preview.bg }}>
                     <CountdownTimer settings={settings}/>
                 </CardBody>
+                {!isDatetimeValid && <CardFooter isShady={true} size="small"><small>Why are zeros displayed? Set <u>future</u> date &amp; time.</small></CardFooter>}
             </Card>
         </Draggable>
     );
