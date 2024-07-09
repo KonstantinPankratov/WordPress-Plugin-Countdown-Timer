@@ -1,26 +1,16 @@
+.the-countdown-timer-editor-component {
+    position: relative;
+}
+
 .the-cdt {
     $parent: &;
 
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    --the-cdt-value-size: 50px;
-
-    // border-radius: 5px;
-    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: flex;
 
     &-block {
         min-width: calc(var(--the-cdt-value-size) * 2);
-        height: calc(var(--the-cdt-value-size) * 2);
-        border-radius: 5px;
-
-        // box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        // background-color: rgba(0, 0, 0, 0.1);
 
         box-sizing: border-box;
-        padding: 10px;
 
         display: flex;
         flex-direction: column;

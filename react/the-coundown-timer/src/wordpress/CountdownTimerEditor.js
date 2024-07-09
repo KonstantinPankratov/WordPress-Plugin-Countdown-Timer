@@ -1,9 +1,28 @@
-import { ComboboxControl, RangeControl, TimePicker, Tip, ColorPicker, FontSizePicker, Panel, PanelBody, PanelRow, Flex, FlexBlock, TextControl, CardDivider, BaseControl, FlexItem } from '@wordpress/components';
+import React from 'react';
 import { useEffect, useState } from '@wordpress/element';
-import CountdownTimer from '../timer/CountdownTimer';
 import '@wordpress/components/build-style/style.css';
-import React, { Fragment } from 'react';
 import CountdownTimerPreview from './CountdownTimerPreview';
+import {
+    ComboboxControl,
+    Tip,
+    ColorPicker,
+    FontSizePicker,
+    Panel,
+    PanelBody,
+    PanelRow,
+    Flex,
+    FlexBlock,
+    TextControl,
+    CardDivider,
+    BaseControl,
+    FlexItem,
+    RadioControl,
+    TextareaControl,
+    __experimentalBorderControl as BorderControl,
+    __experimentalNumberControl as NumberControl,
+    __experimentalToggleGroupControl as ToggleGroupControl,
+    __experimentalToggleGroupControlOption as ToggleGroupControlOption,
+} from '@wordpress/components';
 
 const timezoneOptions = [
     {
@@ -48,7 +67,7 @@ const numbersFontWightOptions = [
     }
 ];
 
-const unitFontSizeOptions = [
+const unitsFontSizeOptions = [
     {
         name: 'Small',
         size: 10,
@@ -66,7 +85,7 @@ const unitFontSizeOptions = [
     }
 ];
 
-const unitFontWightOptions = [
+const unitsFontWightOptions = [
     {
         value: '200',
         label: 'Thin',
@@ -90,6 +109,9 @@ const unitFontWightOptions = [
 ];
 
 const CountdownTimerEditor = () => {
+    const [ openedPanel, togglePanel ] = useState( '' );
+    const [ previewBg, setPreviewBg ] = useState( '#FFFFFF' );
+
     const [ datetime, setDatetime ] = useState( new Date().toISOString().slice(0,16) );
     const [ timezone, setTimezone ] = useState( 'UTC' );
 
@@ -103,15 +125,39 @@ const CountdownTimerEditor = () => {
     const [ numbersFontSize, setNumbersFontSize ] = useState( 40 );
     const [ numbersFontColor, setNumbersFontColor ] = useState( '#000000' );
 
-    const [ unitFontFamily, setUnitFontFamily ] = useState( 'monospace' );
-    const [ unitFontWeight, setUnitFontWeight ] = useState( '700' );
-    const [ unitFontSize, setUnitFontSize ] = useState( 13 );
-    const [ unitFontColor, setUnitFontColor ] = useState( '#000000' );
+    const [ unitsFontFamily, setUnitsFontFamily ] = useState( 'monospace' );
+    const [ unitsFontWeight, setUnitsFontWeight ] = useState( '700' );
+    const [ unitsFontSize, setUnitsFontSize ] = useState( 13 );
+    const [ unitsFontColor, setUnitsFontColor ] = useState( '#000000' );
 
     const [ timeSeparator, setTimeSeparator ] = useState( '' );
     const [ timeSeparatorColor, setTimeSeparatorColor ] = useState( '#000000' );
+    const [ timeSeparatorWeight, setTimeSeparatorWeight ] = useState( '700' );
+    const [ timeSeparatorSize, setTimeSeparatorSize ] = useState( 40 );
+
     const [ daySeparator, setDaySeparator ] = useState( '' );
     const [ daySeparatorColor, setDaySeparatorColor ] = useState( '#000000' );
+    const [ daySeparatorWeight, setDaySeparatorWeight ] = useState( '700' );
+    const [ daySeparatorSize, setDaySeparatorSize ] = useState( 40 );
+
+    const [ blockBg, setBlockBg ] = useState( 'transparent' );
+    const [ blockRounding, setBlockRounding ] = useState( 0 );
+    const [ blockSpaceBetween, setBlockSpaceBetween ] = useState( 0 );
+    const [ blockSpaceWithin, setBlockSpaceWithin ] = useState( 0 );
+    const [ blockBorder, setBlockBorder ] = useState( {
+        color: '',
+        width: 0,
+        style: 'none'
+    } );
+    const [ blockShadow, setBlockShadow ] = useState( {
+        color: '',
+        width: 0
+    } );
+    const [ blockAlignment, setBlockAlignment ] = useState( 'left' );
+
+
+    const [ afterExpirationVisibility, setAfterExpirationVisibility ] = useState( 'keep' );
+    const [ afterExpirationText, setAfterExpirationText ] = useState( '' );
 
     const [ settings, setSettings ] = useState({
         datetime,
@@ -130,21 +176,38 @@ const CountdownTimerEditor = () => {
                 color: numbersFontColor
             },
             unit: {
-                family: unitFontFamily,
-                weight: unitFontWeight,
-                size: unitFontSize,
-                color: unitFontColor
+                family: unitsFontFamily,
+                weight: unitsFontWeight,
+                size: unitsFontSize,
+                color: unitsFontColor
             },
         },
         separators: {
             time: {
                 value: timeSeparator,
+                size: timeSeparatorSize,
+                weight: timeSeparatorWeight,
                 color: timeSeparatorColor
             },
             day: {
                 value: daySeparator,
+                size: daySeparatorSize,
+                weight: daySeparatorWeight,
                 color: daySeparatorColor
             }
+        },
+        block: {
+            bg: blockBg,
+            border: blockBorder,
+            rounding: blockRounding,
+            shadow: blockShadow,
+            gap: blockSpaceBetween,
+            padding: blockSpaceWithin,
+            alignment: blockAlignment
+        },
+        expiration: {
+            visibility: afterExpirationVisibility,
+            text: afterExpirationText
         }
     });
 
@@ -180,15 +243,19 @@ const CountdownTimerEditor = () => {
             separators: {
                 time: {
                     value: timeSeparator,
+                    size: timeSeparatorSize,
+                    weight: timeSeparatorWeight,
                     color: timeSeparatorColor
                 },
                 day: {
                     value: daySeparator,
+                    size: daySeparatorSize,
+                    weight: daySeparatorWeight,
                     color: daySeparatorColor
                 }
             }
         })
-    }, [timeSeparator, daySeparator, timeSeparatorColor, daySeparatorColor]);
+    }, [timeSeparator, timeSeparatorColor, timeSeparatorSize, timeSeparatorWeight, daySeparator, daySeparatorColor, daySeparatorSize, daySeparatorWeight]);
 
     useEffect(() => {
         setSettings({
@@ -211,22 +278,60 @@ const CountdownTimerEditor = () => {
             font: {
                 ...settings.font,
                 unit: {
-                    family: unitFontFamily,
-                    weight: unitFontWeight,
-                    size: unitFontSize,
-                    color: unitFontColor
+                    family: unitsFontFamily,
+                    weight: unitsFontWeight,
+                    size: unitsFontSize,
+                    color: unitsFontColor
                 }
             }
         })
-    }, [unitFontFamily, unitFontWeight, unitFontSize, unitFontColor]);
+    }, [unitsFontFamily, unitsFontWeight, unitsFontSize, unitsFontColor]);
 
+    useEffect(() => {
+        setSettings({
+            ...settings,
+            block: {
+                bg: blockBg,
+                border: blockBorder,
+                rounding: blockRounding + 'px',
+                shadow: blockShadow,
+                gap: blockSpaceBetween + 'px',
+                padding: blockSpaceWithin + 'px',
+                alignment: blockAlignment
+            }
+        })
+    }, [blockBg, blockBorder, blockRounding, blockShadow, blockSpaceBetween, blockSpaceWithin, blockAlignment])
+
+    useEffect(() => {
+        setSettings({
+            ...settings,
+            expiration: {
+                visibility: afterExpirationVisibility,
+                text: afterExpirationText
+            }
+        })
+    }, [afterExpirationVisibility, afterExpirationText])
+
+    const css = `
+        .components-panel__body-toggle.components-button:focus{
+            box-shadow: none;
+        }
+        .components-panel__body.is-disabled {
+            background: rgba(0, 0, 0, 0.025);
+        }
+        .components-panel__body.is-opened .components-panel__body-toggle {
+            font-weight: 900;
+        }
+    `
     return (
         <div>
-            <CountdownTimerPreview settings={settings}/>
+            <CountdownTimerPreview settings={settings} preview={{ bg: previewBg }}/>
 
             <Panel header="Settings">
-                <Fragment key=".0">
-                <PanelBody title="Date & time, timezone">
+                <PanelBody title="Date & time, timezone"
+                    className={ openedPanel !== 'panel1' && 'is-disabled'  }
+                    opened={openedPanel === 'panel1'}
+                    onToggle={(opened) => togglePanel(opened ? 'panel1' : '')}>
                     <PanelRow>
                         <Flex wrap={true} align='flex-start' gap={6} style={{ width: '100%' }} justify="unset">
                             <FlexItem style={{ width: '200px' }}>
@@ -243,6 +348,7 @@ const CountdownTimerEditor = () => {
                                 <ComboboxControl
                                     label="Timezone"
                                     __next40pxDefaultSize
+                                    allowReset={false}
                                     options={timezoneOptions}
                                     onChange={ ( newTimezone ) => setTimezone( newTimezone ) }
                                     value={timezone}/>
@@ -250,26 +356,44 @@ const CountdownTimerEditor = () => {
                         </Flex>
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title="Numbers Font" initialOpen={false}>
+                <PanelBody title="Numbers"
+                    className={ openedPanel !== 'panel2' && 'is-disabled' }
+                    opened={openedPanel === 'panel2'}
+                    onToggle={(opened) => togglePanel(opened ? 'panel2' : '')}>
                     <PanelRow>
                         <Flex direction="column" gap={6} style={{ width: '100%' }}>
                             <FlexBlock>
                                 <Flex wrap={true} gap={6} align='flex-start' justify="unset">
                                     <FlexItem style={{ width: '300px' }}>
-                                        <ComboboxControl
-                                            label="Font style"
-                                            options={numbersFontWightOptions}
-                                            __next40pxDefaultSize
-                                            onChange={ ( newValue ) => setNumbersFontWeight( newValue ) }
-                                            value={numbersFontWeight}/>
+                                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                                            <FlexBlock>
+                                                <ComboboxControl
+                                                    label="Style"
+                                                    __next40pxDefaultSize
+                                                    options={numbersFontWightOptions}
+                                                    allowReset={false}
+                                                    onChange={ ( newValue ) => setNumbersFontWeight( newValue ) }
+                                                    value={numbersFontWeight}/>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <FontSizePicker
+                                                    fontSizes={numbersFontSizeOptions}
+                                                    __next40pxDefaultSize
+                                                    withReset={false}
+                                                    numberss={[ 'px' ]}
+                                                    onChange={ ( newValue ) => setNumbersFontSize( newValue ) }
+                                                    value={numbersFontSize}/>
+                                            </FlexBlock>
+                                        </Flex>
                                     </FlexItem>
                                     <FlexItem style={{ width: '300px' }}>
-                                        <FontSizePicker
-                                            fontSizes={numbersFontSizeOptions}
-                                            __next40pxDefaultSize
-                                            units={[ 'px' ]}
-                                            onChange={ ( newValue ) => setNumbersFontSize( newValue ) }
-                                            value={numbersFontSize}/>
+                                        <BaseControl label="Color">
+                                            <ColorPicker
+                                                copyFormat='hex'
+                                                enableAlpha={true}
+                                                onChange={ ( newValue ) => setNumbersFontColor( newValue ) }
+                                                color={numbersFontColor}/>
+                                        </BaseControl>
                                     </FlexItem>
                                 </Flex>
                             </FlexBlock>
@@ -279,52 +403,124 @@ const CountdownTimerEditor = () => {
                         </Flex>
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title="Units Font" initialOpen={false}>
+                <PanelBody title="Units"
+                    className={ openedPanel !== 'panel3' && 'is-disabled' }
+                    opened={openedPanel === 'panel3'}
+                    onToggle={(opened) => togglePanel(opened ? 'panel3' : '')}>
                     <PanelRow>
                         <Flex direction="column" gap={6} style={{ width: '100%' }}>
                             <FlexBlock>
                                 <Flex wrap={true} gap={6} align='flex-start' justify="unset">
+                                    <FlexBlock>
+                                        <TextControl
+                                    label="Days"
+                                    __next40pxDefaultSize
+                                    help="The text that is displayed for 'Days'"
+                                    onChange={ ( newValue ) => setDayUnit( newValue ) }
+                                    value={ dayUnit }/>
+                                    </FlexBlock>
+                                    <FlexBlock>
+                                        <TextControl
+                                    label="Hours"
+                                    __next40pxDefaultSize
+                                    help="The text that is displayed for 'Hours'"
+                                    onChange={ ( newValue ) => setHourUnit( newValue ) }
+                                    value={ hourUnit }/>
+                                    </FlexBlock>
+                                    <FlexBlock>
+                                        <TextControl
+                                    label="Minutes"
+                                    __next40pxDefaultSize
+                                    help="The text that is displayed for 'Minutes'"
+                                    onChange={ ( newValue ) => setMinuteUnit( newValue ) }
+                                    value={ minuteUnit }/>
+                                    </FlexBlock>
+                                    <FlexBlock>
+                                        <TextControl
+                                    label="Seconds"
+                                    __next40pxDefaultSize
+                                    help="The text that is displayed for 'Seconds'"
+                                    onChange={ ( newValue ) => setSecondUnit( newValue ) }
+                                    value={ secondUnit }/>
+                                    </FlexBlock>
+                                </Flex>
+                                <CardDivider margin={5}/>
+                            </FlexBlock>
+                            <FlexBlock>
+                                <Flex wrap={true} gap={6} align='flex-start' justify="unset">
                                     <FlexItem style={{ width: '300px' }}>
-                                        <ComboboxControl
-                                            label="Font style"
-                                            __next40pxDefaultSize
-                                            options={unitFontWightOptions}
-                                            onChange={ ( newValue ) => setUnitFontWeight( newValue ) }
-                                            value={unitFontWeight}/>
+                                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                                            <FlexBlock>
+                                                <ComboboxControl
+                                                    label="Style"
+                                                    __next40pxDefaultSize
+                                                    allowReset={false}
+                                                    options={unitsFontWightOptions}
+                                                    onChange={ ( newValue ) => setUnitsFontWeight( newValue ) }
+                                                    value={unitsFontWeight}/>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <FontSizePicker
+                                                    fontSizes={unitsFontSizeOptions}
+                                                    __next40pxDefaultSize
+                                                    withReset={false}
+                                                    units={[ 'px' ]}
+                                                    onChange={ ( newValue ) => setUnitsFontSize( newValue ) }
+                                                    value={unitsFontSize}/>
+                                            </FlexBlock>
+                                        </Flex>
                                     </FlexItem>
                                     <FlexItem style={{ width: '300px' }}>
-                                        <FontSizePicker
-                                            fontSizes={unitFontSizeOptions}
-                                            __next40pxDefaultSize
-                                            units={[ 'px' ]}
-                                            onChange={ ( newValue ) => setUnitFontSize( newValue ) }
-                                            value={unitFontSize}/>
+                                        <BaseControl label="Color">
+                                            <ColorPicker
+                                                copyFormat='hex'
+                                                enableAlpha={true}
+                                                onChange={ ( newValue ) => setUnitsFontColor( newValue ) }
+                                                color={unitsFontColor}/>
+                                        </BaseControl>
                                     </FlexItem>
                                 </Flex>
                             </FlexBlock>
                         </Flex>
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title="Colors" initialOpen={false}>
+                <PanelBody title="Separators"
+                    className={ openedPanel !== 'panel4' && 'is-disabled' }
+                    opened={openedPanel === 'panel4'}
+                    onToggle={(opened) => togglePanel(opened ? 'panel4' : '')}>
                     <PanelRow>
-                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
-                            <FlexBlock>
-                                <Flex wrap={true} gap={6} justify="">
-                                    <FlexItem>
-                                        <BaseControl label="Numbers color">
-                                            <ColorPicker
-                                                copyFormat='hex'
-                                                onChange={ ( newValue ) => setNumbersFontColor( newValue ) }
-                                                color={numbersFontColor}/>
-                                        </BaseControl>
-                                    </FlexItem>
-                                    <FlexItem>
-                                        <BaseControl label="Units color">
-                                            <ColorPicker
-                                                copyFormat='hex'
-                                                onChange={ ( newValue ) => setUnitFontColor( newValue ) }
-                                                color={unitFontColor}/>
-                                        </BaseControl>
+                        <Flex wrap={true} gap={20} justify="" align="flex-start">
+                            <FlexItem>
+                                <Flex wrap={true} gap={6} justify="" align="flex-start">
+                                    <FlexItem width="300px">
+                                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                                            <FlexBlock>
+                                                <TextControl
+                                                    label="Time separator"
+                                                    __next40pxDefaultSize
+                                                    help="between hours, minutes and seconds"
+                                                    onChange={ ( newValue ) => setTimeSeparator( newValue ) }
+                                                    value={ timeSeparator }/>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <ComboboxControl
+                                                    label="Style"
+                                                    __next40pxDefaultSize
+                                                    allowReset={false}
+                                                    options={numbersFontWightOptions}
+                                                    onChange={ ( newValue ) => setTimeSeparatorWeight( newValue ) }
+                                                    value={timeSeparatorWeight}/>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <FontSizePicker
+                                                    fontSizes={numbersFontSizeOptions}
+                                                    __next40pxDefaultSize
+                                                    withReset={false}
+                                                    units={[ 'px' ]}
+                                                    onChange={ ( newValue ) => setTimeSeparatorSize( newValue ) }
+                                                    value={timeSeparatorSize}/>
+                                            </FlexBlock>
+                                        </Flex>
                                     </FlexItem>
                                     <FlexItem>
                                         <BaseControl label="Time separator color">
@@ -334,76 +530,206 @@ const CountdownTimerEditor = () => {
                                                 color={timeSeparatorColor}/>
                                         </BaseControl>
                                     </FlexItem>
+                                </Flex>
+                            </FlexItem>
+                            <FlexItem>
+                                <Flex wrap={true} gap={6} justify="" align="flex-start">
+                                    <FlexItem width="300px">
+                                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                                            <FlexBlock>
+                                                <TextControl
+                                                    label="Day Separator"
+                                                    __next40pxDefaultSize
+                                                    help="between days and time"
+                                                    onChange={ ( newValue ) => setDaySeparator( newValue ) }
+                                                    value={ daySeparator }/>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <ComboboxControl
+                                                    label="Style"
+                                                    __next40pxDefaultSize
+                                                    allowReset={false}
+                                                    options={numbersFontWightOptions}
+                                                    onChange={ ( newValue ) => setDaySeparatorWeight( newValue ) }
+                                                    value={daySeparatorWeight}/>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <FontSizePicker
+                                                    fontSizes={numbersFontSizeOptions}
+                                                    __next40pxDefaultSize
+                                                    withReset={false}
+                                                    units={[ 'px' ]}
+                                                    onChange={ ( newValue ) => setDaySeparatorSize( newValue ) }
+                                                    value={daySeparatorSize}/>
+                                            </FlexBlock>
+                                        </Flex>
+                                    </FlexItem>
                                     <FlexItem>
                                         <BaseControl label="Day separator color">
                                             <ColorPicker
                                                 copyFormat='hex'
+                                                enableAlpha={true}
                                                 onChange={ ( newValue ) => setDaySeparatorColor( newValue ) }
                                                 color={daySeparatorColor}/>
                                         </BaseControl>
+                                    </FlexItem>
+                                </Flex>
+                            </FlexItem>
+                        </Flex>
+                    </PanelRow>
+                </PanelBody>
+                <PanelBody title="Blocks"
+                    className={ openedPanel !== 'panel5' && 'is-disabled' }
+                    opened={openedPanel === 'panel5'}
+                    onToggle={(opened) => togglePanel(opened ? 'panel5' : '')}>
+                    <PanelRow>
+                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                            <FlexBlock>
+                                <Flex wrap={true} gap={6} align='flex-start' justify="unset">
+                                    <FlexItem>
+                                        <BaseControl label="Background color">
+                                            <ColorPicker
+                                                copyFormat='hex'
+                                                enableAlpha={true}
+                                                onChange={ ( newValue ) => setBlockBg( newValue ) }
+                                                color={blockBg}/>
+                                        </BaseControl>
+                                    </FlexItem>
+                                    <FlexItem style={{ width: '300px' }}>
+                                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                                            <FlexBlock>
+                                                <NumberControl
+                                                    __next40pxDefaultSize
+                                                    label="Corner rounding"
+                                                    min={0}
+                                                    spinControls="custom"
+                                                    required={true}
+                                                    value={blockRounding}
+                                                    onChange={ (newValue) => setBlockRounding( newValue ) }/>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <BorderControl
+                                                    label="Border"
+                                                    value={blockBorder}
+                                                    disableUnits={true}
+                                                    onChange={ (newValue) => setBlockBorder( newValue ) }/>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <BorderControl
+                                                    label="Shadow"
+                                                    value={blockShadow}
+                                                    enableStyle={false}
+                                                    disableUnits={true}
+                                                    placeholder="Blur"
+                                                    onChange={ (newValue) => setBlockShadow( newValue ) }/>
+                                            </FlexBlock>
+                                        </Flex>
+                                    </FlexItem>
+                                    <FlexItem style={{ width: '300px' }}>
+                                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                                            <FlexBlock>
+                                                <NumberControl
+                                                    __next40pxDefaultSize
+                                                    label="Spacing between blocks"
+                                                    min={0}
+                                                    spinControls="custom"
+                                                    required={true}
+                                                    value={blockSpaceBetween}
+                                                    onChange={ (newValue) => setBlockSpaceBetween( newValue ) }/>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <NumberControl
+                                                    __next40pxDefaultSize
+                                                    label="Spacing within blocks"
+                                                    min={0}
+                                                    spinControls="custom"
+                                                    required={true}
+                                                    value={blockSpaceWithin}
+                                                    onChange={ (newValue) => setBlockSpaceWithin( newValue ) }/>
+                                            </FlexBlock>
+                                        </Flex>
+                                    </FlexItem>
+                                    <FlexItem style={{ width: '300px' }}>
+                                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                                            <FlexBlock>
+                                                <ToggleGroupControl
+                                                    isBlock
+                                                    label="Alignment"
+                                                    value={blockAlignment}
+                                                    onChange={ (newValue) => setBlockAlignment( newValue ) }>
+                                                    <ToggleGroupControlOption
+                                                        label="Left"
+                                                        value="left"/>
+                                                    <ToggleGroupControlOption
+                                                        label="Center"
+                                                        value="center"/>
+                                                    <ToggleGroupControlOption
+                                                        label="Right"
+                                                        value="right"/>
+                                                </ToggleGroupControl>
+                                            </FlexBlock>
+                                        </Flex>
                                     </FlexItem>
                                 </Flex>
                             </FlexBlock>
                         </Flex>
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title="Text" initialOpen={false}>
+                <PanelBody title="After expiration"
+                    className={ openedPanel !== 'panel6' && 'is-disabled' }
+                    opened={openedPanel === 'panel6'}
+                    onToggle={(opened) => togglePanel(opened ? 'panel6' : '')}>
                     <PanelRow>
-                        <Flex direction="column" expanded={true} gap={10} style={{ width: '100%' }}>
+                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
                             <FlexBlock>
-                                <TextControl
-                                    label="Days"
-                                    __next40pxDefaultSize
-                                    help="The text that is displayed for 'Days'"
-                                    onChange={ ( newValue ) => setDayUnit( newValue ) }
-                                    value={ dayUnit }/>
-                                <TextControl
-                                    label="Hours"
-                                    __next40pxDefaultSize
-                                    help="The text that is displayed for 'Hours'"
-                                    onChange={ ( newValue ) => setHourUnit( newValue ) }
-                                    value={ hourUnit }/>
-                                <TextControl
-                                    label="Minutes"
-                                    __next40pxDefaultSize
-                                    help="The text that is displayed for 'Minutes'"
-                                    onChange={ ( newValue ) => setMinuteUnit( newValue ) }
-                                    value={ minuteUnit }/>
-                                <TextControl
-                                    label="Seconds"
-                                    __next40pxDefaultSize
-                                    help="The text that is displayed for 'Seconds'"
-                                    onChange={ ( newValue ) => setSecondUnit( newValue ) }
-                                    value={ secondUnit }/>
-                                <CardDivider margin={5}/>
-                                <TextControl
-                                    label="Separator"
-                                    __next40pxDefaultSize
-                                    help="Time separator (ex. H:M:S)"
-                                    onChange={ ( newValue ) => setTimeSeparator( newValue ) }
-                                    value={ timeSeparator }/>
-                                <TextControl
-                                    label="Day Separator"
-                                    __next40pxDefaultSize
-                                    help="Separator between days and time"
-                                    onChange={ ( newValue ) => setDaySeparator( newValue ) }
-                                    value={ daySeparator }/>
+                                <RadioControl
+                                    options={[
+                                        {
+                                        label: 'Keep visible',
+                                        value: 'keep'
+                                        },
+                                        {
+                                        label: 'Hide',
+                                        value: 'hide'
+                                        },
+                                        {
+                                        label: 'Show text',
+                                        value: 'text'
+                                        }
+                                    ]}
+                                    onChange={ ( newValue ) => setAfterExpirationVisibility( newValue ) }
+                                    selected={afterExpirationVisibility}/>
+                            </FlexBlock>
+                            { afterExpirationVisibility === 'text' && <FlexBlock>
+                                <TextareaControl
+                                    label="Text"
+                                    onChange={ ( newValue ) => setAfterExpirationText( newValue ) }
+                                    value={afterExpirationText}/> 
+                            </FlexBlock>}
+                        </Flex>
+                    </PanelRow>
+                </PanelBody>
+                <PanelBody title="Preview"
+                    className={ openedPanel !== 'panel7' && 'is-disabled' }
+                    opened={openedPanel === 'panel7'}
+                    onToggle={(opened) => togglePanel(opened ? 'panel7' : '')}>
+                    <PanelRow>
+                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                            <FlexBlock>
+                                <BaseControl label="Background color">
+                                    <ColorPicker
+                                        copyFormat='hex'
+                                        onChange={ ( newValue ) => setPreviewBg( newValue ) }
+                                        color={previewBg}/>
+                                </BaseControl>
                             </FlexBlock>
                         </Flex>
                     </PanelRow>
                 </PanelBody>
-                </Fragment>
+                <PanelBody title="Animations coming soon" buttonProps={{ disabled: true }} opened={false}></PanelBody>
             </Panel>
 
-            {/* <RangeControl
-                label="Choose unit font size"
-                help="Please select how transparent you would like this."
-                initialPosition={50}
-                max={1}
-                min={0}
-                step={0.05}
-                onChange={function noRefCheck(){}}
-            /> */}
+            <style>{css}</style>
         </div>
     );
 };

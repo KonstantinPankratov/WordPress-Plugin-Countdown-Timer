@@ -21,7 +21,7 @@ const useCountdown = (targetDate) => {
 const getReturnValues = (countdown) =>
 {
 	if (countdown < 0) {
-        return { years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+        return { years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
     }
 
 	const years = Math.floor(countdown / (1000 * 60 * 60 * 24 * 365));
@@ -32,7 +32,7 @@ const getReturnValues = (countdown) =>
 	const minutes = Math.max(Math.floor((countdown % (1000 * 60 * 60)) / (1000 * 60)), 0);
 	const seconds = Math.max(Math.floor((countdown % (1000 * 60)) / 1000), 0);
 
-	return {years, months, weeks, days, hours, minutes, seconds};
+	return {years, months, weeks, days, hours, minutes, seconds, expired: false};
 };
 
 export { useCountdown };
