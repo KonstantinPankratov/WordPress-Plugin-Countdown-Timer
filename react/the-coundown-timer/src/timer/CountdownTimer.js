@@ -5,6 +5,7 @@ function CountdownValue ({ font, children }) {
 	return (
 		<div className="the-cdt-value" style={{
 			color: font?.color,
+			fontFamily: font?.family,
 			fontSize: font?.size,
 			fontWeight: font?.weight }}>{children}</div>
 	)
@@ -14,6 +15,7 @@ function CountdownUnit ({ font, children }) {
 	return (
 		<div className="the-cdt-unit" style={{
 			color: font?.color,
+			fontFamily: font?.family,
 			fontSize: font?.size,
 			fontWeight: font?.weight }}>{children}</div>
 	)
