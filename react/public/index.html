@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Countdown timer</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div class="the-countdown-timer-component" data-date="2027-12-07T10:00:00" data-delimiter=":"></div> -->
+
+    <div style="max-width: 1800px; margin: auto; padding: 50px 0;">
+      <div class="the-countdown-timer-editor-component"></div>
+      <script>
+        window.theCdtSettings = "{\"datetime\":\"2024-07-31T16:27\",\"timezone\":\"UTC\",\"defaultUnits\":{\"days\":\"Days\",\"hours\":\"Hours\",\"minutes\":\"Minutes\",\"seconds\":\"Seconds\"},\"unitTranslations\":{\"en\":{\"day\":\"Days\",\"hour\":\"Hours\",\"minute\":\"Minutes\",\"second\":\"Seconds\"}},\"numbersFont\":{\"family\":\"monospace\",\"weight\":\"700\",\"size\":40,\"color\":\"#000000\"},\"unitsFont\":{\"family\":\"inherit\",\"weight\":\"700\",\"size\":13,\"color\":\"#000000\"},\"timeSeparator\":{\"symbol\":\"\",\"size\":40,\"weight\":\"700\",\"color\":\"#000000\"},\"daySeparator\":{\"symbol\":\"\",\"size\":40,\"weight\":\"700\",\"color\":\"#000000\"},\"blocks\":{\"background\":\"#ededed\",\"rounding\":5,\"border\":{\"color\":\"\",\"width\":0,\"style\":\"none\"},\"shadow\":{\"color\":\"\",\"width\":0},\"padding\":\"19\"},\"container\":{\"gap\":\"10\",\"alignment\":\"left\"},\"expiration\":{\"visibility\":\"keep\",\"text\":\"\"}}";
+      </script>
+    </div>
+  </body>
+</html>
