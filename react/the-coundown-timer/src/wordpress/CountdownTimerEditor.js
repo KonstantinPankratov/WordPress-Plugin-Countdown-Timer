@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useReducer, useRef, useState } from '@wordpress/element';
 import '@wordpress/components/build-style/style.css';
 import CountdownTimerPreview from './CountdownTimerPreview';
 import {
@@ -24,293 +23,33 @@ import {
     __experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 
-const timezoneOptions = [
-    {
-        value: 'UTC',
-        label: 'UTC'
-    }
-]
-
-const  numbersFontFamilyOptions = [
-    {
-        value: 'monospace',
-        label: 'Monospace',
-    }
-];
-
-const numbersFontSizeOptions = [
-    {
-        name: 'Small',
-        size: 30,
-        slug: 'small'
-    },
-    {
-        name: 'Normal',
-        size: 40,
-        slug: 'normal'
-    },
-    {
-        name: 'Big',
-        size: 60,
-        slug: 'big'
-    }
-];
-
-const numbersFontWightOptions = [
-    {
-        value: '400',
-        label: 'Regular',
-    },
-    {
-        value: '700',
-        label: 'Bold',
-    }
-];
-
-const unitsFontSizeOptions = [
-    {
-        name: 'Small',
-        size: 10,
-        slug: 'small'
-    },
-    {
-        name: 'Normal',
-        size: 13,
-        slug: 'normal'
-    },
-    {
-        name: 'Big',
-        size: 16,
-        slug: 'big'
-    }
-];
-
-const unitsFontWightOptions = [
-    {
-        value: '200',
-        label: 'Thin',
-    },
-    {
-        value: '400',
-        label: 'Regular',
-    },
-    {
-        value: '500',
-        label: 'Semibold',
-    },
-    {
-        value: '700',
-        label: 'Bold',
-    },
-    {
-        value: '900',
-        label: 'Black'
-    },
-];
+import {
+    timezoneOptions,
+    numbersFontSizeOptions,
+    numbersFontWightOptions,
+    unitsFontSizeOptions,
+    unitsFontWightOptions
+} from './configurationOptions';
+import { settingsReducer } from './reducers/settingsReducer';
 
 const CountdownTimerEditor = () => {
-    const [ openedPanel, togglePanel ] = useState( '' );
-    const [ previewBg, setPreviewBg ] = useState( '#FFFFFF' );
+    const configInputRef = useRef(null);
+    const [ openedPanel, togglePanel ] = useState();
+    const [ previewBg, setPreviewBg ] = useState();
 
-    const [ datetime, setDatetime ] = useState( new Date().toISOString().slice(0,16) );
-    const [ timezone, setTimezone ] = useState( 'UTC' );
+    const [settings, dispatch] = useReducer(settingsReducer, require('./presets/default.json'));
 
-    const [ dayUnit, setDayUnit ] = useState( 'Days' );
-    const [ hourUnit, setHourUnit ] = useState( 'Hours' );
-    const [ minuteUnit, setMinuteUnit ] = useState( 'Minutes' );
-    const [ secondUnit, setSecondUnit ] = useState( 'Seconds' );
-
-    const [ numbersFontFamily, setNumbersFontFamily ] = useState( 'monospace' );
-    const [ numbersFontWeight, setNumbersFontWeight ] = useState( '700' );
-    const [ numbersFontSize, setNumbersFontSize ] = useState( 40 );
-    const [ numbersFontColor, setNumbersFontColor ] = useState( '#000000' );
-
-    const [ unitsFontFamily, setUnitsFontFamily ] = useState( 'monospace' );
-    const [ unitsFontWeight, setUnitsFontWeight ] = useState( '700' );
-    const [ unitsFontSize, setUnitsFontSize ] = useState( 13 );
-    const [ unitsFontColor, setUnitsFontColor ] = useState( '#000000' );
-
-    const [ timeSeparator, setTimeSeparator ] = useState( '' );
-    const [ timeSeparatorColor, setTimeSeparatorColor ] = useState( '#000000' );
-    const [ timeSeparatorWeight, setTimeSeparatorWeight ] = useState( '700' );
-    const [ timeSeparatorSize, setTimeSeparatorSize ] = useState( 40 );
-
-    const [ daySeparator, setDaySeparator ] = useState( '' );
-    const [ daySeparatorColor, setDaySeparatorColor ] = useState( '#000000' );
-    const [ daySeparatorWeight, setDaySeparatorWeight ] = useState( '700' );
-    const [ daySeparatorSize, setDaySeparatorSize ] = useState( 40 );
-
-    const [ blockBg, setBlockBg ] = useState( 'transparent' );
-    const [ blockRounding, setBlockRounding ] = useState( 0 );
-    const [ blockSpaceBetween, setBlockSpaceBetween ] = useState( 0 );
-    const [ blockSpaceWithin, setBlockSpaceWithin ] = useState( 0 );
-    const [ blockBorder, setBlockBorder ] = useState( {
-        color: '',
-        width: 0,
-        style: 'none'
-    } );
-    const [ blockShadow, setBlockShadow ] = useState( {
-        color: '',
-        width: 0
-    } );
-    const [ blockAlignment, setBlockAlignment ] = useState( 'left' );
-
-
-    const [ afterExpirationVisibility, setAfterExpirationVisibility ] = useState( 'keep' );
-    const [ afterExpirationText, setAfterExpirationText ] = useState( '' );
-
-    const [ settings, setSettings ] = useState({
-        datetime,
-        timezone,
-        units: {
-            day: dayUnit,
-            hour: hourUnit,
-            minute: minuteUnit,
-            second: secondUnit,
-        },
-        font: {
-            number: {
-                family: numbersFontFamily,
-                weight: numbersFontWeight,
-                size: numbersFontSize,
-                color: numbersFontColor
-            },
-            unit: {
-                family: unitsFontFamily,
-                weight: unitsFontWeight,
-                size: unitsFontSize,
-                color: unitsFontColor
-            },
-        },
-        separators: {
-            time: {
-                value: timeSeparator,
-                size: timeSeparatorSize,
-                weight: timeSeparatorWeight,
-                color: timeSeparatorColor
-            },
-            day: {
-                value: daySeparator,
-                size: daySeparatorSize,
-                weight: daySeparatorWeight,
-                color: daySeparatorColor
-            }
-        },
-        block: {
-            bg: blockBg,
-            border: blockBorder,
-            rounding: blockRounding,
-            shadow: blockShadow,
-            gap: blockSpaceBetween,
-            padding: blockSpaceWithin,
-            alignment: blockAlignment
-        },
-        expiration: {
-            visibility: afterExpirationVisibility,
-            text: afterExpirationText
+    useEffect(() => {
+        if (typeof window.theCdtSettings !== 'undefined') {
+            dispatch({ type: 'LOAD_CONFIG', value: JSON.parse(window.theCdtSettings)});
         }
-    });
+    }, []);
 
     useEffect(() => {
-        setSettings({
-            ...settings,
-            datetime
-        })
-    }, [datetime]);
-
-    useEffect(() => {
-        setSettings({
-            ...settings,
-            timezone
-        })
-    }, [timezone]);
-
-    useEffect(() => {
-        setSettings({
-            ...settings,
-            units: {
-                day: dayUnit,
-                hour: hourUnit,
-                minute: minuteUnit,
-                second: secondUnit,
-            }
-        })
-    }, [dayUnit, hourUnit, minuteUnit, secondUnit]);
-
-    useEffect(() => {
-        setSettings({
-            ...settings,
-            separators: {
-                time: {
-                    value: timeSeparator,
-                    size: timeSeparatorSize,
-                    weight: timeSeparatorWeight,
-                    color: timeSeparatorColor
-                },
-                day: {
-                    value: daySeparator,
-                    size: daySeparatorSize,
-                    weight: daySeparatorWeight,
-                    color: daySeparatorColor
-                }
-            }
-        })
-    }, [timeSeparator, timeSeparatorColor, timeSeparatorSize, timeSeparatorWeight, daySeparator, daySeparatorColor, daySeparatorSize, daySeparatorWeight]);
-
-    useEffect(() => {
-        setSettings({
-            ...settings,
-            font: {
-                ...settings.font,
-                number: {
-                    family: numbersFontFamily,
-                    weight: numbersFontWeight,
-                    size: numbersFontSize,
-                    color: numbersFontColor
-                }
-            }
-        })
-    }, [numbersFontFamily, numbersFontWeight, numbersFontSize, numbersFontColor]);
-
-    useEffect(() => {
-        setSettings({
-            ...settings,
-            font: {
-                ...settings.font,
-                unit: {
-                    family: unitsFontFamily,
-                    weight: unitsFontWeight,
-                    size: unitsFontSize,
-                    color: unitsFontColor
-                }
-            }
-        })
-    }, [unitsFontFamily, unitsFontWeight, unitsFontSize, unitsFontColor]);
-
-    useEffect(() => {
-        setSettings({
-            ...settings,
-            block: {
-                bg: blockBg,
-                border: blockBorder,
-                rounding: blockRounding + 'px',
-                shadow: blockShadow,
-                gap: blockSpaceBetween + 'px',
-                padding: blockSpaceWithin + 'px',
-                alignment: blockAlignment
-            }
-        })
-    }, [blockBg, blockBorder, blockRounding, blockShadow, blockSpaceBetween, blockSpaceWithin, blockAlignment])
-
-    useEffect(() => {
-        setSettings({
-            ...settings,
-            expiration: {
-                visibility: afterExpirationVisibility,
-                text: afterExpirationText
-            }
-        })
-    }, [afterExpirationVisibility, afterExpirationText])
+        if (configInputRef.current) {
+            configInputRef.current.value = JSON.stringify(settings);
+        }
+    }, [settings]);
 
     const css = `
         .components-panel__body-toggle.components-button:focus{
@@ -322,7 +61,7 @@ const CountdownTimerEditor = () => {
         .components-panel__body.is-opened .components-panel__body-toggle {
             font-weight: 900;
         }
-    `
+    `;
     return (
         <div>
             <CountdownTimerPreview settings={settings} preview={{ bg: previewBg }}/>
@@ -341,8 +80,8 @@ const CountdownTimerEditor = () => {
                                     type='datetime-local'
                                     step={1}
                                     onClick={(e) => e.target.showPicker()}
-                                    onChange={ ( newDatetime ) => setDatetime( newDatetime ) }
-                                    value={ datetime }/>
+                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', key: 'datetime', value: newValue}) }
+                                    value={ settings.datetime }/>
                             </FlexItem>
                             <FlexItem style={{ width: '300px' }}>
                                 <ComboboxControl
@@ -350,8 +89,8 @@ const CountdownTimerEditor = () => {
                                     __next40pxDefaultSize
                                     allowReset={false}
                                     options={timezoneOptions}
-                                    onChange={ ( newTimezone ) => setTimezone( newTimezone ) }
-                                    value={timezone}/>
+                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', key: 'timezone', value: newValue}) }
+                                    value={ settings.timezone }/>
                             </FlexItem>
                         </Flex>
                     </PanelRow>
@@ -372,8 +111,8 @@ const CountdownTimerEditor = () => {
                                                     __next40pxDefaultSize
                                                     options={numbersFontWightOptions}
                                                     allowReset={false}
-                                                    onChange={ ( newValue ) => setNumbersFontWeight( newValue ) }
-                                                    value={numbersFontWeight}/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'numbersFont', key: 'weight', value: newValue}) }
+                                                    value={settings.numbersFont.weight}/>
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <FontSizePicker
@@ -381,8 +120,8 @@ const CountdownTimerEditor = () => {
                                                     __next40pxDefaultSize
                                                     withReset={false}
                                                     numberss={[ 'px' ]}
-                                                    onChange={ ( newValue ) => setNumbersFontSize( newValue ) }
-                                                    value={numbersFontSize}/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'numbersFont', key: 'size', value: newValue}) }
+                                                    value={settings.numbersFont.size}/>
                                             </FlexBlock>
                                         </Flex>
                                     </FlexItem>
@@ -391,8 +130,8 @@ const CountdownTimerEditor = () => {
                                             <ColorPicker
                                                 copyFormat='hex'
                                                 enableAlpha={true}
-                                                onChange={ ( newValue ) => setNumbersFontColor( newValue ) }
-                                                color={numbersFontColor}/>
+                                                onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'numbersFont', key: 'color', value: newValue}) }
+                                                value={settings.numbersFont.color}/>
                                         </BaseControl>
                                     </FlexItem>
                                 </Flex>
@@ -413,35 +152,35 @@ const CountdownTimerEditor = () => {
                                 <Flex wrap={true} gap={6} align='flex-start' justify="unset">
                                     <FlexBlock>
                                         <TextControl
-                                    label="Days"
-                                    __next40pxDefaultSize
-                                    help="The text that is displayed for 'Days'"
-                                    onChange={ ( newValue ) => setDayUnit( newValue ) }
-                                    value={ dayUnit }/>
+                                            label="Days"
+                                            __next40pxDefaultSize
+                                            help="The text that is displayed for 'Days'"
+                                            onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'days', value: newValue}) }
+                                            value={ settings.defaultUnits.days }/>
                                     </FlexBlock>
                                     <FlexBlock>
                                         <TextControl
-                                    label="Hours"
-                                    __next40pxDefaultSize
-                                    help="The text that is displayed for 'Hours'"
-                                    onChange={ ( newValue ) => setHourUnit( newValue ) }
-                                    value={ hourUnit }/>
+                                            label="Hours"
+                                            __next40pxDefaultSize
+                                            help="The text that is displayed for 'Hours'"
+                                            onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'hours', value: newValue}) }
+                                            value={ settings.defaultUnits.hours }/>
                                     </FlexBlock>
                                     <FlexBlock>
                                         <TextControl
-                                    label="Minutes"
-                                    __next40pxDefaultSize
-                                    help="The text that is displayed for 'Minutes'"
-                                    onChange={ ( newValue ) => setMinuteUnit( newValue ) }
-                                    value={ minuteUnit }/>
+                                            label="Minutes"
+                                            __next40pxDefaultSize
+                                            help="The text that is displayed for 'Minutes'"
+                                            onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'minutes', value: newValue}) }
+                                            value={ settings.defaultUnits.minutes }/>
                                     </FlexBlock>
                                     <FlexBlock>
                                         <TextControl
-                                    label="Seconds"
-                                    __next40pxDefaultSize
-                                    help="The text that is displayed for 'Seconds'"
-                                    onChange={ ( newValue ) => setSecondUnit( newValue ) }
-                                    value={ secondUnit }/>
+                                            label="Seconds"
+                                            __next40pxDefaultSize
+                                            help="The text that is displayed for 'Seconds'"
+                                            onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'seconds', value: newValue}) }
+                                            value={ settings.defaultUnits.seconds }/>
                                     </FlexBlock>
                                 </Flex>
                                 <CardDivider margin={5}/>
@@ -456,8 +195,8 @@ const CountdownTimerEditor = () => {
                                                     __next40pxDefaultSize
                                                     allowReset={false}
                                                     options={unitsFontWightOptions}
-                                                    onChange={ ( newValue ) => setUnitsFontWeight( newValue ) }
-                                                    value={unitsFontWeight}/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'unitsFont', key: 'weight', value: newValue}) }
+                                                    value={settings.unitsFont.weight}/>
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <FontSizePicker
@@ -465,8 +204,8 @@ const CountdownTimerEditor = () => {
                                                     __next40pxDefaultSize
                                                     withReset={false}
                                                     units={[ 'px' ]}
-                                                    onChange={ ( newValue ) => setUnitsFontSize( newValue ) }
-                                                    value={unitsFontSize}/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'unitsFont', key: 'size', value: newValue}) }
+                                                    value={settings.unitsFont.size}/>
                                             </FlexBlock>
                                         </Flex>
                                     </FlexItem>
@@ -475,8 +214,8 @@ const CountdownTimerEditor = () => {
                                             <ColorPicker
                                                 copyFormat='hex'
                                                 enableAlpha={true}
-                                                onChange={ ( newValue ) => setUnitsFontColor( newValue ) }
-                                                color={unitsFontColor}/>
+                                                onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'unitsFont', key: 'color', value: newValue}) }
+                                                value={settings.unitsFont.color}/>
                                         </BaseControl>
                                     </FlexItem>
                                 </Flex>
@@ -499,8 +238,8 @@ const CountdownTimerEditor = () => {
                                                     label="Time separator"
                                                     __next40pxDefaultSize
                                                     help="between hours, minutes and seconds"
-                                                    onChange={ ( newValue ) => setTimeSeparator( newValue ) }
-                                                    value={ timeSeparator }/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'timeSeparator', key: 'symbol', value: newValue}) }
+                                                    value={settings.timeSeparator.symbol}/>
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <ComboboxControl
@@ -508,8 +247,8 @@ const CountdownTimerEditor = () => {
                                                     __next40pxDefaultSize
                                                     allowReset={false}
                                                     options={numbersFontWightOptions}
-                                                    onChange={ ( newValue ) => setTimeSeparatorWeight( newValue ) }
-                                                    value={timeSeparatorWeight}/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'timeSeparator', key: 'weight', value: newValue}) }
+                                                    value={settings.timeSeparator.weight}/>
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <FontSizePicker
@@ -517,8 +256,8 @@ const CountdownTimerEditor = () => {
                                                     __next40pxDefaultSize
                                                     withReset={false}
                                                     units={[ 'px' ]}
-                                                    onChange={ ( newValue ) => setTimeSeparatorSize( newValue ) }
-                                                    value={timeSeparatorSize}/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'timeSeparator', key: 'size', value: newValue}) }
+                                                    value={settings.timeSeparator.size}/>
                                             </FlexBlock>
                                         </Flex>
                                     </FlexItem>
@@ -526,8 +265,8 @@ const CountdownTimerEditor = () => {
                                         <BaseControl label="Time separator color">
                                             <ColorPicker
                                                 copyFormat='hex'
-                                                onChange={ ( newValue ) => setTimeSeparatorColor( newValue ) }
-                                                color={timeSeparatorColor}/>
+                                                onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'timeSeparator', key: 'color', value: newValue}) }
+                                                value={settings.timeSeparator.color}/>
                                         </BaseControl>
                                     </FlexItem>
                                 </Flex>
@@ -541,8 +280,8 @@ const CountdownTimerEditor = () => {
                                                     label="Day Separator"
                                                     __next40pxDefaultSize
                                                     help="between days and time"
-                                                    onChange={ ( newValue ) => setDaySeparator( newValue ) }
-                                                    value={ daySeparator }/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'daySeparator', key: 'symbol', value: newValue}) }
+                                                    value={settings.daySeparator.symbol}/>
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <ComboboxControl
@@ -550,8 +289,8 @@ const CountdownTimerEditor = () => {
                                                     __next40pxDefaultSize
                                                     allowReset={false}
                                                     options={numbersFontWightOptions}
-                                                    onChange={ ( newValue ) => setDaySeparatorWeight( newValue ) }
-                                                    value={daySeparatorWeight}/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'daySeparator', key: 'weight', value: newValue}) }
+                                                    value={settings.daySeparator.weight}/>
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <FontSizePicker
@@ -559,8 +298,8 @@ const CountdownTimerEditor = () => {
                                                     __next40pxDefaultSize
                                                     withReset={false}
                                                     units={[ 'px' ]}
-                                                    onChange={ ( newValue ) => setDaySeparatorSize( newValue ) }
-                                                    value={daySeparatorSize}/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'daySeparator', key: 'size', value: newValue}) }
+                                                    value={settings.daySeparator.size}/>
                                             </FlexBlock>
                                         </Flex>
                                     </FlexItem>
@@ -569,8 +308,8 @@ const CountdownTimerEditor = () => {
                                             <ColorPicker
                                                 copyFormat='hex'
                                                 enableAlpha={true}
-                                                onChange={ ( newValue ) => setDaySeparatorColor( newValue ) }
-                                                color={daySeparatorColor}/>
+                                                onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'daySeparator', key: 'color', value: newValue}) }
+                                                value={settings.daySeparator.color}/>
                                         </BaseControl>
                                     </FlexItem>
                                 </Flex>
@@ -591,8 +330,8 @@ const CountdownTimerEditor = () => {
                                             <ColorPicker
                                                 copyFormat='hex'
                                                 enableAlpha={true}
-                                                onChange={ ( newValue ) => setBlockBg( newValue ) }
-                                                color={blockBg}/>
+                                                onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'blocks', key: 'background', value: newValue}) }
+                                                color={settings.blocks.background}/>
                                         </BaseControl>
                                     </FlexItem>
                                     <FlexItem style={{ width: '300px' }}>
@@ -604,24 +343,24 @@ const CountdownTimerEditor = () => {
                                                     min={0}
                                                     spinControls="custom"
                                                     required={true}
-                                                    value={blockRounding}
-                                                    onChange={ (newValue) => setBlockRounding( newValue ) }/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'blocks', key: 'rounding', value: newValue}) }
+                                                    value={settings.blocks.rounding}/>
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <BorderControl
                                                     label="Border"
-                                                    value={blockBorder}
                                                     disableUnits={true}
-                                                    onChange={ (newValue) => setBlockBorder( newValue ) }/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'blocks', key: 'border', value: newValue}) }
+                                                    value={settings.blocks.border}/>
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <BorderControl
                                                     label="Shadow"
-                                                    value={blockShadow}
                                                     enableStyle={false}
                                                     disableUnits={true}
                                                     placeholder="Blur"
-                                                    onChange={ (newValue) => setBlockShadow( newValue ) }/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'blocks', key: 'shadow', value: newValue}) }
+                                                    value={settings.blocks.shadow}/>
                                             </FlexBlock>
                                         </Flex>
                                     </FlexItem>
@@ -634,8 +373,8 @@ const CountdownTimerEditor = () => {
                                                     min={0}
                                                     spinControls="custom"
                                                     required={true}
-                                                    value={blockSpaceBetween}
-                                                    onChange={ (newValue) => setBlockSpaceBetween( newValue ) }/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'container', key: 'gap', value: newValue}) }
+                                                    value={settings.container.gap}/>
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <NumberControl
@@ -644,8 +383,8 @@ const CountdownTimerEditor = () => {
                                                     min={0}
                                                     spinControls="custom"
                                                     required={true}
-                                                    value={blockSpaceWithin}
-                                                    onChange={ (newValue) => setBlockSpaceWithin( newValue ) }/>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'blocks', key: 'padding', value: newValue}) }
+                                                    value={settings.blocks.padding}/>
                                             </FlexBlock>
                                         </Flex>
                                     </FlexItem>
@@ -655,8 +394,8 @@ const CountdownTimerEditor = () => {
                                                 <ToggleGroupControl
                                                     isBlock
                                                     label="Alignment"
-                                                    value={blockAlignment}
-                                                    onChange={ (newValue) => setBlockAlignment( newValue ) }>
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'container', key: 'alignment', value: newValue}) }
+                                                    value={settings.container.alignment}>
                                                     <ToggleGroupControlOption
                                                         label="Left"
                                                         value="left"/>
@@ -697,14 +436,14 @@ const CountdownTimerEditor = () => {
                                         value: 'text'
                                         }
                                     ]}
-                                    onChange={ ( newValue ) => setAfterExpirationVisibility( newValue ) }
-                                    selected={afterExpirationVisibility}/>
+                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'expiration', key: 'visibility', value: newValue}) }
+                                    selected={settings.expiration.visibility}/>
                             </FlexBlock>
-                            { afterExpirationVisibility === 'text' && <FlexBlock>
+                            { settings.expiration.visibility === 'text' && <FlexBlock>
                                 <TextareaControl
                                     label="Text"
-                                    onChange={ ( newValue ) => setAfterExpirationText( newValue ) }
-                                    value={afterExpirationText}/> 
+                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'expiration', key: 'text', value: newValue}) }
+                                    selected={settings.expiration.text}/>
                             </FlexBlock>}
                         </Flex>
                     </PanelRow>
@@ -729,6 +468,7 @@ const CountdownTimerEditor = () => {
                 <PanelBody title="Animations coming soon" buttonProps={{ disabled: true }} opened={false}></PanelBody>
             </Panel>
 
+            <input type="hidden" name="config" ref={configInputRef} />
             <style>{css}</style>
         </div>
     );

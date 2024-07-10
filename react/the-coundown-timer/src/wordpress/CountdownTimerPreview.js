@@ -3,13 +3,13 @@ import CountdownTimer from '../timer/CountdownTimer';
 import { Card, CardBody, CardFooter, CardHeader } from '@wordpress/components';
 
 const CountdownTimerPreview = ({ settings, preview }) => {
-    const [isDatetimeValid, setIsDatetimeValid] = useState();
+    const [isDatetimeValid, setIsDatetimeValid] = useState(true);
 
     useEffect(() => {
         setIsDatetimeValid(
-            new Date(settings.datetime) > new Date()
+            new Date(settings?.datetime) > new Date()
         )
-    }, [settings.datetime])
+    }, [settings?.datetime])
     
     return (
     <Card style={{ marginBottom: '10px' }}>

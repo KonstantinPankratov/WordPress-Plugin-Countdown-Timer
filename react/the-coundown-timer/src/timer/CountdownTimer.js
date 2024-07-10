@@ -21,18 +21,18 @@ function CountdownUnit ({ font, children }) {
 	)
 }
 
-function CountdownBlock ({ size, block, children })
+function CountdownBlock ({ size, style, children })
 {
-	const boxShadow = (block.shadow?.width || block.shadow?.width === 0) ? `0 0 ${block.shadow.width} ${block.shadow.color}` : 'none';
+	const boxShadow = (style?.shadow?.width || style?.shadow?.width === 0) ? `0 0 ${style?.shadow?.width} ${style?.shadow?.color}` : 'none';
 
 	return (
 		<div className="the-cdt-block" style={{
-			padding: block.padding,
-			backgroundColor: block.bg,
-			borderStyle: block.border?.style,
-			borderWidth: block.border?.width,
-			borderColor: block.border?.color,
-			borderRadius: block.rounding,
+			padding: style?.padding + 'px',
+			backgroundColor: style?.background,
+			borderStyle: style?.border?.style,
+			borderWidth: style?.border?.width,
+			borderColor: style?.border?.color,
+			borderRadius: style?.rounding,
 			boxShadow: boxShadow,
 			
 			'--the-cdt-value-size': size }}>
@@ -55,38 +55,38 @@ export default function CountdownTimer ({ settings })
 
 	return (
 		<>
-		{ (!expired || expirationVisibility === 'keep') && <div className={`the-cdt`} style={{ gap: settings.block?.gap, justifyContent: settings.block?.alignment }}>
+		{ (!expired || expirationVisibility === 'keep') && <div className={`the-cdt`} style={{ gap: settings.container?.gap + 'px', justifyContent: settings.container?.alignment }}>
 
-			<CountdownBlock size={settings?.font?.number?.size} block={settings.block}>
-				<CountdownValue font={settings?.font?.number}>{days.toString().padStart(2, "0")}</CountdownValue>
-				<CountdownUnit font={settings.font?.unit}>{settings.units.day}</CountdownUnit>
+			<CountdownBlock size={settings?.numbersFont?.size} style={settings.blocks}>
+				<CountdownValue font={settings?.numbersFont}>{days.toString().padStart(2, "0")}</CountdownValue>
+				<CountdownUnit font={settings.unitsFont}>{settings.defaultUnits?.days}</CountdownUnit>
 			</CountdownBlock>
 
-			{ settings.separators.day.value && <CountdownDelimiter delimiter={settings.separators.day}/>}
+			{ settings?.daySeparator?.symbol && <CountdownDelimiter delimiter={settings?.daySeparator}/>}
 
 
-			<CountdownBlock size={settings?.font?.number?.size} block={settings.block}>
-				<CountdownValue font={settings?.font?.number}>{hours.toString().padStart(2, "0")}</CountdownValue>
-				<CountdownUnit font={settings.font?.unit}>{settings.units.hour}</CountdownUnit>
+			<CountdownBlock size={settings?.numbersFont?.size} style={settings.blocks}>
+				<CountdownValue font={settings?.numbersFont}>{hours.toString().padStart(2, "0")}</CountdownValue>
+				<CountdownUnit font={settings.unitsFont}>{settings.defaultUnits?.hours}</CountdownUnit>
 			</CountdownBlock>
 
-			{ settings.separators.time.value && <CountdownDelimiter delimiter={settings.separators.time}/>}
+			{ settings?.timeSeparator?.symbol && <CountdownDelimiter delimiter={settings?.timeSeparator}/>}
 
-			<CountdownBlock size={settings?.font?.number?.size} block={settings.block}>
-				<CountdownValue font={settings?.font?.number}>{minutes.toString().padStart(2, "0")}</CountdownValue>
-				<CountdownUnit font={settings.font?.unit}>{settings.units.minute}</CountdownUnit>
+			<CountdownBlock size={settings?.numbersFont?.size} style={settings.blocks}>
+				<CountdownValue font={settings?.numbersFont}>{minutes.toString().padStart(2, "0")}</CountdownValue>
+				<CountdownUnit font={settings.unitsFont}>{settings.defaultUnits?.minutes}</CountdownUnit>
 			</CountdownBlock>
 
-			{ settings.separators.time.value && <CountdownDelimiter delimiter={settings.separators.time}/>}
+			{ settings?.timeSeparator?.symbol && <CountdownDelimiter delimiter={settings?.timeSeparator}/>}
 
-			<CountdownBlock size={settings?.font?.number?.size} block={settings.block}>
-				<CountdownValue font={settings?.font?.number}>{seconds.toString().padStart(2, "0")}</CountdownValue>
-				<CountdownUnit font={settings.font?.unit}>{settings.units.second}</CountdownUnit>
+			<CountdownBlock size={settings?.numbersFont?.size} style={settings.blocks}>
+				<CountdownValue font={settings?.numbersFont}>{seconds.toString().padStart(2, "0")}</CountdownValue>
+				<CountdownUnit font={settings.unitsFont}>{settings.defaultUnits?.seconds}</CountdownUnit>
 			</CountdownBlock>
 		</div> }
 
-		{ (expired && expirationVisibility === 'text') && <div className={`the-cdt`} style={{ gap: settings.block?.gap, justifyContent: settings.block?.alignment }}>
-			<CountdownBlock size={settings?.font?.number?.size} block={settings.block}>
+		{ (expired && expirationVisibility === 'text') && <div className={`the-cdt`} style={{ gap: settings.blocks?.gap, justifyContent: settings.blocks?.alignment }}>
+			<CountdownBlock size={settings?.numbersFont?.size} style={settings.blocks}>
 				<p className='the-cdt-expiration-text'>{settings?.expiration?.text}</p>
 			</CountdownBlock>
 		</div> }
