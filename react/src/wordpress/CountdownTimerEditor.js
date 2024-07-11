@@ -51,17 +51,6 @@ const CountdownTimerEditor = () => {
         }
     }, [settings]);
 
-    const css = `
-        .components-panel__body-toggle.components-button:focus{
-            box-shadow: none;
-        }
-        .components-panel__body.is-disabled {
-            background: rgba(0, 0, 0, 0.025);
-        }
-        .components-panel__body.is-opened .components-panel__body-toggle {
-            font-weight: 900;
-        }
-    `;
     return (
         <div>
             <CountdownTimerPreview settings={settings} preview={{ bg: previewBg }}/>
@@ -468,8 +457,7 @@ const CountdownTimerEditor = () => {
                 <PanelBody title="Animations coming soon" buttonProps={{ disabled: true }} opened={false}></PanelBody>
             </Panel>
 
-            <input type="hidden" name="config" ref={configInputRef} />
-            <style>{css}</style>
+            <input type="hidden" name="content" ref={configInputRef} />
         </div>
     );
 };
