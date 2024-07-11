@@ -15,7 +15,7 @@ const CountdownTimerPreview = ({ settings, preview }) => {
     <Card style={{ marginBottom: '10px' }}>
         <CardHeader>Preview</CardHeader>
         <CardBody style={{ backgroundColor: preview.bg }}>
-            <CountdownTimer settings={settings}/>
+            <CountdownTimer config={settings}/>
         </CardBody>
         {!isDatetimeValid && <CardFooter isShady={true} size="small"><small>Why are zeros displayed? Set <u>future</u> date &amp; time.</small></CardFooter>}
     </Card>
