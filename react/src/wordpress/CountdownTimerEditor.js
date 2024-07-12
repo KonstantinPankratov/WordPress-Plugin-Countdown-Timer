@@ -24,6 +24,7 @@ import {
 } from '@wordpress/components';
 
 import {
+    utcTimezones,
     numbersFontSizeOptions,
     numbersFontWightOptions,
     unitsFontSizeOptions,
@@ -32,9 +33,17 @@ import {
 import { settingsReducer } from './reducers/settingsReducer';
 import './css/editor.css';
 
-const { config } = window.theCountdownTimerData || {};
+const { config, wpTimezoneName, wpTimezoneOffset } = window.theCountdownTimerData || {};
+
+const defaultTimezone = wpTimezoneName ? 
+                            wpTimezoneName : 
+                            wpTimezoneOffset ? 
+                                wpTimezoneOffset : 
+                                Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 const initialConfig = {
     ...require('./presets/default.json'),
+    timezone: defaultTimezone,
     datetime: new Date(Date.now() + 95000000).toISOString().split('.')[0]
 };
 
@@ -85,9 +94,9 @@ const CountdownTimerEditor = () => {
                                     label="Timezone"
                                     __next40pxDefaultSize
                                     allowReset={false}
-                                    options={timezoneList}
+                                    options={[...timezoneList, ...utcTimezones]}
                                     onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', key: 'timezone', value: newValue}) }
-                                />
+                                    value={ settings.timezone }/>
                             </FlexItem>
                         </Flex>
                     </PanelRow>
@@ -443,10 +452,26 @@ const CountdownTimerEditor = () => {
                         </Flex>
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title="After expiration"
+                <PanelBody title="Presets"
                     className={ openedPanel !== 'panel6' && 'is-disabled' }
                     opened={openedPanel === 'panel6'}
                     onToggle={(opened) => togglePanel(opened ? 'panel6' : '')}>
+                    <PanelRow>
+                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
+                            <FlexBlock>
+                                <Flex wrap={true} gap={6} align='flex-start' justify="unset">
+                                    <FlexItem>
+                                        
+                                    </FlexItem>
+                                </Flex>
+                            </FlexBlock>
+                        </Flex>
+                    </PanelRow>
+                </PanelBody>
+                <PanelBody title="After expiration"
+                    className={ openedPanel !== 'panel7' && 'is-disabled' }
+                    opened={openedPanel === 'panel7'}
+                    onToggle={(opened) => togglePanel(opened ? 'panel7' : '')}>
                     <PanelRow>
                         <Flex direction="column" gap={6} style={{ width: '100%' }}>
                             <FlexBlock>
@@ -478,9 +503,9 @@ const CountdownTimerEditor = () => {
                     </PanelRow>
                 </PanelBody>
                 <PanelBody title="Preview"
-                    className={ openedPanel !== 'panel7' && 'is-disabled' }
-                    opened={openedPanel === 'panel7'}
-                    onToggle={(opened) => togglePanel(opened ? 'panel7' : '')}>
+                    className={ openedPanel !== 'panel8' && 'is-disabled' }
+                    opened={openedPanel === 'panel8'}
+                    onToggle={(opened) => togglePanel(opened ? 'panel8' : '')}>
                     <PanelRow>
                         <Flex direction="column" gap={6} style={{ width: '100%' }}>
                             <FlexBlock>

@@ -137,12 +137,20 @@ add_action('admin_enqueue_scripts', function ($hook) {
                 }
 
                 wp_localize_script('the-countdown-timer', 'theCountdownTimerData', array(
-                    'config' => $config
+                    'config' => $config,
+                    'wpTimezoneName' => get_option('timezone_string') ?? null,
+                    'wpTimezoneOffset' => get_option('gmt_offset') ? format_utc_offset(get_option('gmt_offset')) : null
                 ));
             }
         }
     }
 });
+
+function format_utc_offset($offset) {
+    $hours = (int) $offset;
+    $minutes = abs(($offset - $hours) * 60);
+    return sprintf('UTC%+d:%02d', $hours, $minutes);
+}
 
 add_action('edit_form_advanced', function ($post) {
     if ($post->post_type === 'the_countdown_timer') {
