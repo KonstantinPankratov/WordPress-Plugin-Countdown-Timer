@@ -1,5 +1,5 @@
-#post .components-panel__body.is-opened > .components-panel__body-title {
-
+#post .components-panel__body.is-opened > h2.components-panel__body-title {
+    margin: -16px -16px 5px;
 }
 #post .the-countdown-timer-editor-component h2 {
     padding: 0;
