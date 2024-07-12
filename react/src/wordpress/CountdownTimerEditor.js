@@ -120,7 +120,7 @@ const CountdownTimerEditor = () => {
                                                 copyFormat='hex'
                                                 enableAlpha={true}
                                                 onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'numbersFont', key: 'color', value: newValue}) }
-                                                value={settings.numbersFont.color}/>
+                                                color={settings.numbersFont.color}/>
                                         </BaseControl>
                                     </FlexItem>
                                 </Flex>
@@ -204,7 +204,7 @@ const CountdownTimerEditor = () => {
                                                 copyFormat='hex'
                                                 enableAlpha={true}
                                                 onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'unitsFont', key: 'color', value: newValue}) }
-                                                value={settings.unitsFont.color}/>
+                                                color={settings.unitsFont.color}/>
                                         </BaseControl>
                                     </FlexItem>
                                 </Flex>
@@ -255,7 +255,7 @@ const CountdownTimerEditor = () => {
                                             <ColorPicker
                                                 copyFormat='hex'
                                                 onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'timeSeparator', key: 'color', value: newValue}) }
-                                                value={settings.timeSeparator.color}/>
+                                                color={settings.timeSeparator.color}/>
                                         </BaseControl>
                                     </FlexItem>
                                 </Flex>
@@ -298,7 +298,7 @@ const CountdownTimerEditor = () => {
                                                 copyFormat='hex'
                                                 enableAlpha={true}
                                                 onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'daySeparator', key: 'color', value: newValue}) }
-                                                value={settings.daySeparator.color}/>
+                                                color={settings.daySeparator.color}/>
                                         </BaseControl>
                                     </FlexItem>
                                 </Flex>
