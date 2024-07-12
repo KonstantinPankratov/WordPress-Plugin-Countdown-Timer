@@ -24,7 +24,6 @@ import {
 } from '@wordpress/components';
 
 import {
-    timezoneOptions,
     numbersFontSizeOptions,
     numbersFontWightOptions,
     unitsFontSizeOptions,
@@ -33,16 +32,25 @@ import {
 import { settingsReducer } from './reducers/settingsReducer';
 import './css/editor.css';
 
+const { config } = window.theCountdownTimerData || {};
+const initialConfig = {
+    ...require('./presets/default.json'),
+    datetime: new Date(Date.now() + 95000000).toISOString().split('.')[0]
+};
+
+const timezoneList = Intl.supportedValuesOf('timeZone').map((tz) => {
+    const tzOffset = new Intl.DateTimeFormat('en',{timeZone:tz, timeZoneName:'shortOffset'}).formatToParts().find(part => part.type==='timeZoneName').value;
+    return {
+        value: tz,
+        label: `${tz} (${tzOffset})`,
+    }
+});
+
 const CountdownTimerEditor = () => {
     const configInputRef = useRef(null);
     const [ openedPanel, togglePanel ] = useState();
     const [ previewBg, setPreviewBg ] = useState();
 
-    const { config } = window.theCountdownTimerData || {};
-    const initialConfig = {
-        ...require('./presets/default.json'),
-        datetime: new Date(Date.now() + 95000000).toISOString().split('.')[0]
-    };
     const [settings, dispatch] = useReducer(settingsReducer, config ?? initialConfig);
 
     useEffect(() => {
@@ -77,9 +85,9 @@ const CountdownTimerEditor = () => {
                                     label="Timezone"
                                     __next40pxDefaultSize
                                     allowReset={false}
-                                    options={timezoneOptions}
+                                    options={timezoneList}
                                     onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', key: 'timezone', value: newValue}) }
-                                    value={ settings.timezone }/>
+                                />
                             </FlexItem>
                         </Flex>
                     </PanelRow>

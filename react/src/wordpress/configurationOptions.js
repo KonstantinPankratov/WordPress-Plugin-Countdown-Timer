@@ -1,10 +1,3 @@
-export const timezoneOptions = [
-    {
-        value: 'UTC',
-        label: 'UTC'
-    }
-]
-
 export const numbersFontSizeOptions = [
     {
         name: 'Small',

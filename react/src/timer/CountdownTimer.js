@@ -52,7 +52,7 @@ function CountdownDelimiter ({ delimiter })
 
 export default function CountdownTimer ({ config })
 {
-	const {days, hours, minutes, seconds, expired} = useCountdown(config.datetime);
+	const {days, hours, minutes, seconds, expired} = useCountdown(config.datetime, config.timezone);
 	const expirationVisibility = config?.expiration?.visibility || 'keep'
 
 	return (

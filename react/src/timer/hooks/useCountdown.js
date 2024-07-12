@@ -1,38 +1,36 @@
 import { useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
 
-const useCountdown = (targetDate) => {
-	const countdowndate = new Date(targetDate).getTime();
-
-	const [countdown, setCountdown] = useState(
-		countdowndate - new Date().getTime()
-	);
+const useCountdown = (datetime, timezone) => {
+	const [remainingTime, setRemainingTime] = useState(getRemainingTime());
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setCountdown(countdowndate - new Date().getTime());
+			setRemainingTime(getRemainingTime());
 		}, 1000);
 
 		return () => clearInterval(interval);
-	}, [countdowndate, targetDate]);
+	}, [datetime, timezone]);
+  
+	function getRemainingTime() {
+		const targetTime = DateTime.fromISO(datetime, { zone: timezone });
+		const now = DateTime.now().setZone(timezone);
+		const diff = targetTime.diff(now, ['days', 'hours', 'minutes', 'seconds']);
 
-	return getReturnValues(countdown);
-};
+		if (diff.toMillis() <= 0) {
+			return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
+		}
+	
+		return {
+			days: diff.days,
+			hours: diff.hours,
+			minutes: diff.minutes,
+			seconds: Math.floor(diff.seconds),
+			expired: false
+		}
+	}
 
-const getReturnValues = (countdown) =>
-{
-	if (countdown < 0) {
-        return { years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
-    }
-
-	const years = Math.floor(countdown / (1000 * 60 * 60 * 24 * 365));
-    const months = Math.floor((countdown % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-    const weeks = Math.floor(((countdown % (1000 * 60 * 60 * 24 * 365)) % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24 * 7));
-	const days = Math.max(Math.floor(countdown / (1000 * 60 * 60 * 24)), 0);
-	const hours = Math.max(Math.floor((countdown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), 0);
-	const minutes = Math.max(Math.floor((countdown % (1000 * 60 * 60)) / (1000 * 60)), 0);
-	const seconds = Math.max(Math.floor((countdown % (1000 * 60)) / 1000), 0);
-
-	return {years, months, weeks, days, hours, minutes, seconds, expired: false};
+	return remainingTime;
 };
 
 export { useCountdown };
