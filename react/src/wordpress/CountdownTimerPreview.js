@@ -1,15 +1,10 @@
 import { useEffect, useState } from '@wordpress/element';
 import CountdownTimer from '../timer/CountdownTimer';
+import { useCountdown } from '../timer/hooks/useCountdown';
 import { Card, CardBody, CardFooter, CardHeader } from '@wordpress/components';
 
 const CountdownTimerPreview = ({ settings, preview }) => {
-    const [isDatetimeValid, setIsDatetimeValid] = useState(true);
-
-    useEffect(() => {
-        setIsDatetimeValid(
-            new Date(settings?.datetime) > new Date()
-        )
-    }, [settings?.datetime])
+	const { expired } = useCountdown(settings.datetime, settings.timezone);
     
     return (
     <Card style={{ marginBottom: '10px' }}>
@@ -17,7 +12,7 @@ const CountdownTimerPreview = ({ settings, preview }) => {
         <CardBody style={{ backgroundColor: preview.bg }}>
             <CountdownTimer config={settings}/>
         </CardBody>
-        {!isDatetimeValid && <CardFooter isShady={true} size="small"><small>Why are zeros displayed? Set <u>future</u> date &amp; time.</small></CardFooter>}
+        {expired && <CardFooter isShady={true} size="small"><small>Why are zeros displayed? Set <u>future</u> date &amp; time.</small></CardFooter>}
     </Card>
     );
 };
