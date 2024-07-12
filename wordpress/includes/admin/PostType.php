@@ -56,22 +56,16 @@ class PostType {
     {
         add_meta_box(
             'the-cdt-general-settings',
-            __('General settings', self::$post_type_slug),
+            __('Shortcode', self::$post_type_slug),
             array(__CLASS__, 'general_settings_meta_box_content'),
-            self::$post_type_slug
+            self::$post_type_slug,
+            'side'
         );
     }
 
     public static function general_settings_meta_box_content($post)
     {
-        // wp_nonce_field('custom_post_manager_save_meta_box_data', 'custom_post_manager_meta_box_nonce');
-
-        $value = get_post_meta($post->ID, '_custom_post_meta_key', true);
-
-        echo '<label for="custom_post_manager_new_field">';
-        _e('Custom Field', 'custom-post-manager');
-        echo '</label> ';
-        echo '<input type="text" id="custom_post_manager_new_field" name="custom_post_manager_new_field" value="' . esc_attr($value) . '" />';
+        echo sprintf("<input type='text' readonly value='[the-countdown-timer id=%d]' class='large-text'>", $post->ID);
     }
 }
 
@@ -99,3 +93,59 @@ class PostType {
 //     update_post_meta($post_id, '_custom_post_meta_key', $data);
 // }
 // add_action('save_post', 'custom_post_manager_save_meta_box_data');
+
+// Load configurator react component styles
+
+add_action('admin_enqueue_scripts', function ($hook) {
+    global $post_type, $post;
+
+    if ($hook === 'post-new.php' || $hook === 'post.php') {
+        if ($post_type === 'the_countdown_timer') {
+
+            $manifest_path = THE_CDT_PLUGIN_COMPONENTS_BUILD_PATH . '/asset-manifest.json';
+
+            if (file_exists($manifest_path)) {
+                $manifest = json_decode(file_get_contents($manifest_path), true);
+
+                // Get the main JS and CSS files from the manifest
+                $main_js = $manifest['files']['main.js'];
+                $main_css = isset($manifest['files']['main.css']) ? $manifest['files']['main.css'] : '';
+
+                wp_enqueue_script(
+                    'the-countdown-timer',
+                    THE_CDT_PLUGIN_COMPONENTS_BUILD_URL . $main_js,
+                    array('wp-element'),
+                    false,
+                    true
+                );
+
+                if ($main_css) {
+                    wp_enqueue_style(
+                        'the-countdown-timer',
+                        THE_CDT_PLUGIN_COMPONENTS_BUILD_URL . $main_css
+                    );
+                }
+
+                $config = null;
+
+                if (isset($post)) {
+                    $parsed = json_decode($post->post_content);
+
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        $config = $parsed;
+                    }
+                }
+
+                wp_localize_script('the-countdown-timer', 'theCountdownTimerData', array(
+                    'config' => $config
+                ));
+            }
+        }
+    }
+});
+
+add_action('edit_form_advanced', function ($post) {
+    if ($post->post_type === 'the_countdown_timer') {
+        echo '<div class="the-countdown-timer-editor-component"></div>';
+    }
+});

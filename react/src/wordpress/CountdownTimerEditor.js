@@ -31,19 +31,19 @@ import {
     unitsFontWightOptions
 } from './configurationOptions';
 import { settingsReducer } from './reducers/settingsReducer';
+import './css/editor.css';
 
 const CountdownTimerEditor = () => {
     const configInputRef = useRef(null);
     const [ openedPanel, togglePanel ] = useState();
     const [ previewBg, setPreviewBg ] = useState();
 
-    const [settings, dispatch] = useReducer(settingsReducer, require('./presets/default.json'));
-
-    useEffect(() => {
-        if (typeof window.theCdtSettings !== 'undefined') {
-            dispatch({ type: 'LOAD_CONFIG', value: JSON.parse(window.theCdtSettings)});
-        }
-    }, []);
+    const { config } = window.theCountdownTimerData || {};
+    const initialConfig = {
+        ...require('./presets/default.json'),
+        datetime: new Date(Date.now() + 95000000).toISOString().split('.')[0]
+    };
+    const [settings, dispatch] = useReducer(settingsReducer, config ?? initialConfig);
 
     useEffect(() => {
         if (configInputRef.current) {

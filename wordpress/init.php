@@ -6,7 +6,10 @@ if (!defined('ABSPATH')) exit;
 
 define('THE_CDT_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('THE_CDT_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('THE_CDT_PLUGIN_COMPONENTS_BUILD_PATH', THE_CDT_PLUGIN_PATH . '../react/build');
+define('THE_CDT_PLUGIN_COMPONENTS_BUILD_URL', THE_CDT_PLUGIN_URL . '../react/build');
 
-require_once THE_CDT_PLUGIN_PATH . '/includes/admin/PostType.php';
+require_once THE_CDT_PLUGIN_PATH . 'includes/admin/PostType.php';
+require_once THE_CDT_PLUGIN_PATH . 'integrations/wp-shortcode.php';
 
 PostType::register();
