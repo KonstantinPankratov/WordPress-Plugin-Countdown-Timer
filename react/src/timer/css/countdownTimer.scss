@@ -6,10 +6,12 @@
     $parent: &;
 
     display: flex;
+    align-items: stretch;
+
+    align-items: center;
 
     &-block {
-        min-width: calc(var(--the-cdt-value-size) * 2);
-
+        min-width: calc(var(--the-cdt-value-size) * 2px);
         box-sizing: border-box;
 
         display: flex;

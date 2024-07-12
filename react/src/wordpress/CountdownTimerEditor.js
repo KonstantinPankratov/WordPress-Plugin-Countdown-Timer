@@ -396,6 +396,38 @@ const CountdownTimerEditor = () => {
                                                         value="right"/>
                                                 </ToggleGroupControl>
                                             </FlexBlock>
+                                            <FlexBlock>
+                                                <ToggleGroupControl
+                                                    isBlock
+                                                    label="Distribution"
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'blocks', key: 'grow', value: newValue}) }
+                                                    value={settings.blocks.grow}>
+                                                    <ToggleGroupControlOption
+                                                        label="Auto"
+                                                        value="0"/>
+                                                    <ToggleGroupControlOption
+                                                        label="Fill container"
+                                                        value="1"/>
+                                                </ToggleGroupControl>
+                                            </FlexBlock>
+                                            <FlexBlock>
+                                                <ToggleGroupControl
+                                                    help={<>
+                                                        Some older versions of browsers do not support this property. You can check the current level of support by clicking
+                                                        <a target='_blank' rel='noreferrer' href='https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio#browser_compatibility'>here</a>
+                                                    </>}
+                                                    isBlock
+                                                    label="Aspect ratio"
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'blocks', key: 'aspectRatio', value: newValue}) }
+                                                    value={settings.blocks.aspectRatio}>
+                                                    <ToggleGroupControlOption
+                                                        label="Auto"
+                                                        value="auto"/>
+                                                    <ToggleGroupControlOption
+                                                        label="Square"
+                                                        value="1"/>
+                                                </ToggleGroupControl>
+                                            </FlexBlock>
                                         </Flex>
                                     </FlexItem>
                                 </Flex>

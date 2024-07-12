@@ -33,6 +33,8 @@ function CountdownBlock ({ size, style, children })
 			borderWidth: style?.border?.width,
 			borderColor: style?.border?.color,
 			borderRadius: style?.rounding,
+			flexGrow: style?.grow,
+			aspectRatio: style?.aspectRatio,
 			boxShadow: boxShadow,
 			
 			'--the-cdt-value-size': size }}>
