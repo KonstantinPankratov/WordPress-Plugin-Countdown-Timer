@@ -356,6 +356,7 @@ const CountdownTimerEditor = () => {
                                                 <BorderControl
                                                     label="Border"
                                                     disableUnits={true}
+                                                    placeholder="Width"
                                                     onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'blocks', key: 'border', value: newValue}) }
                                                     value={settings.blocks.border}/>
                                             </FlexBlock>
@@ -364,7 +365,7 @@ const CountdownTimerEditor = () => {
                                                     label="Shadow"
                                                     enableStyle={false}
                                                     disableUnits={true}
-                                                    placeholder="Blur"
+                                                    placeholder="Blur size"
                                                     onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'blocks', key: 'shadow', value: newValue}) }
                                                     value={settings.blocks.shadow}/>
                                             </FlexBlock>
@@ -430,8 +431,7 @@ const CountdownTimerEditor = () => {
                                             <FlexBlock>
                                                 <ToggleGroupControl
                                                     help={<>
-                                                        Some older versions of browsers do not support this property. You can check the current level of support by clicking
-                                                        <a target='_blank' rel='noreferrer' href='https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio#browser_compatibility'>here</a>
+                                                        Some older versions of browsers do not support this property. You can check the current level of support by clicking <a target='_blank' rel='noreferrer' href='https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio#browser_compatibility'>here</a>
                                                     </>}
                                                     isBlock
                                                     label="Aspect ratio"
