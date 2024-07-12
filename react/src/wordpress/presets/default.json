@@ -1,5 +1,5 @@
 {
-    "datetime": "2024-07-09T16:27",
+    "datetime": "2024-06-31T16:27",
     "timezone": "UTC",
     "defaultUnits": {
         "days": "Days",
@@ -7,7 +7,7 @@
         "minutes": "Minutes",
         "seconds": "Seconds"
     },
-    "unitTranslations" : {
+    "unitTranslations": {
         "en": {
             "day": "Days",
             "hour": "Hours",
@@ -15,10 +15,10 @@
             "second": "Seconds"
         }
     },
-    "numbersFont":  {
+    "numbersFont": {
         "family": "monospace",
         "weight": "700",
-        "size": 40,
+        "size": 60,
         "color": "#000000"
     },
     "unitsFont": {
@@ -29,35 +29,37 @@
     },
     "timeSeparator": {
         "symbol": "",
-        "size": 40,
+        "size": 60,
         "weight": "700",
         "color": "#000000"
     },
     "daySeparator": {
         "symbol": "",
-        "size": 40,
+        "size": 60,
         "weight": "700",
         "color": "#000000"
     },
-    "blocks":  {
+    "blocks": {
         "background": "transparent",
-        "rounding": 5,
-        "border":  {
+        "rounding": "0",
+        "border": {
             "color": "",
             "width": 0,
             "style": "none"
         },
-        "shadow":  {
+        "shadow": {
             "color": "",
             "width": 0
         },
-        "padding": 10
+        "padding": "0",
+        "grow": "0",
+        "aspectRatio": "auto"
     },
     "container": {
-        "gap": 10,
-        "alignment": "center"
+        "gap": "5",
+        "alignment": "left"
     },
-    "expiration":  {
+    "expiration": {
         "visibility": "keep",
         "text": ""
     }
