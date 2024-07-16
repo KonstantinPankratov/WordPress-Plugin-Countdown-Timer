@@ -52,46 +52,22 @@ function CountdownDelimiter ({ delimiter })
 
 export default function CountdownTimer ({ config })
 {
-	const {days, hours, minutes, seconds, expired} = useCountdown(config.datetime, config.timezone);
+	const countdown = useCountdown(config.datetime, config.timezone, config.enabledUnits);
 	const expirationVisibility = config?.expiration?.visibility || 'keep'
 
 	return (
 		<>
-		{ (!expired || expirationVisibility === 'keep') && <div className={`the-cdt`} style={{ gap: config.container?.gap + 'px', justifyContent: config.container?.alignment }}>
-
-			<CountdownBlock size={config?.numbersFont?.size} style={config.blocks}>
-				<CountdownValue font={config?.numbersFont}>{days.toString().padStart(2, "0")}</CountdownValue>
-				<CountdownUnit font={config.unitsFont}>{config.defaultUnits?.days}</CountdownUnit>
-			</CountdownBlock>
-
-			{ config?.daySeparator?.symbol && <CountdownDelimiter delimiter={config?.daySeparator}/>}
-
-
-			<CountdownBlock size={config?.numbersFont?.size} style={config.blocks}>
-				<CountdownValue font={config?.numbersFont}>{hours.toString().padStart(2, "0")}</CountdownValue>
-				<CountdownUnit font={config.unitsFont}>{config.defaultUnits?.hours}</CountdownUnit>
-			</CountdownBlock>
-
-			{ config?.timeSeparator?.symbol && <CountdownDelimiter delimiter={config?.timeSeparator}/>}
-
-			<CountdownBlock size={config?.numbersFont?.size} style={config.blocks}>
-				<CountdownValue font={config?.numbersFont}>{minutes.toString().padStart(2, "0")}</CountdownValue>
-				<CountdownUnit font={config.unitsFont}>{config.defaultUnits?.minutes}</CountdownUnit>
-			</CountdownBlock>
-
-			{ config?.timeSeparator?.symbol && <CountdownDelimiter delimiter={config?.timeSeparator}/>}
-
-			<CountdownBlock size={config?.numbersFont?.size} style={config.blocks}>
-				<CountdownValue font={config?.numbersFont}>{seconds.toString().padStart(2, "0")}</CountdownValue>
-				<CountdownUnit font={config.unitsFont}>{config.defaultUnits?.seconds}</CountdownUnit>
-			</CountdownBlock>
-		</div> }
-
-		{ (expired && expirationVisibility === 'text') && <div className={`the-cdt`} style={{ gap: config.blocks?.gap, justifyContent: config.blocks?.alignment }}>
-			<CountdownBlock size={config?.numbersFont?.size} style={config.blocks}>
-				<p className='the-cdt-expiration-text'>{config?.expiration?.text}</p>
-			</CountdownBlock>
-		</div> }
+		{ (!countdown.expired || expirationVisibility === 'keep') && <div className={`the-cdt`} style={{ gap: config.container?.gap + 'px', justifyContent: config.container?.alignment }}>
+			{
+				config.enabledUnits.map((unit) => (
+					<CountdownBlock key={unit} size={config?.numbersFont?.size} style={config.blocks}>
+						<CountdownValue	ntdownValue font={config?.numbersFont}>{countdown[unit].toString().padStart(2, "0")}</CountdownValue>
+						<CountdownUnit font={config.unitsFont}>{config.defaultUnits[unit]}</CountdownUnit>
+					</CountdownBlock>
+				))
+			}
+			</div>
+		}
 		</>
 	);
 };

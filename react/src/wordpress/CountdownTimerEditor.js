@@ -21,6 +21,7 @@ import {
     __experimentalNumberControl as NumberControl,
     __experimentalToggleGroupControl as ToggleGroupControl,
     __experimentalToggleGroupControlOption as ToggleGroupControlOption,
+    ToggleControl,
 } from '@wordpress/components';
 
 import {
@@ -156,35 +157,94 @@ const CountdownTimerEditor = () => {
                         <Flex direction="column" gap={6} style={{ width: '100%' }}>
                             <FlexBlock>
                                 <Flex wrap={true} gap={6} align='flex-start' justify="unset">
-                                    <FlexBlock>
+                                    <FlexBlock style={{width: '300px'}}>
                                         <TextControl
-                                            label="Days"
+                                            label={
+                                                <ToggleControl
+                                                    __nextHasNoMarginBottom
+                                                    label='Years'
+                                                    checked={settings?.enabledUnits?.includes('years') ?? false}
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_ENABLED_UNITS', key: 'years', checked: newValue}) }/>
+                                            }
                                             __next40pxDefaultSize
-                                            help="The text that is displayed for 'Days'"
+                                            onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'years', value: newValue}) }
+                                            value={ settings.defaultUnits.years }/>
+                                    </FlexBlock>
+                                    <FlexBlock style={{width: '300px'}}>
+                                        <TextControl
+                                            label={
+                                                <ToggleControl
+                                                    __nextHasNoMarginBottom
+                                                    label='Months'
+                                                    checked={settings?.enabledUnits?.includes('months') ?? false}
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_ENABLED_UNITS', key: 'months', checked: newValue}) }/>
+                                            }
+                                            __next40pxDefaultSize
+                                            onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'months', value: newValue}) }
+                                            value={ settings.defaultUnits.months }/>
+                                    </FlexBlock>
+                                    <FlexBlock style={{width: '300px'}}>
+                                        <TextControl
+                                            label={
+                                                <ToggleControl
+                                                    __nextHasNoMarginBottom
+                                                    label='Weeks'
+                                                    checked={settings?.enabledUnits?.includes('weeks') ?? false}
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_ENABLED_UNITS', key: 'weeks', checked: newValue}) }/>
+                                            }
+                                            __next40pxDefaultSize
+                                            onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'weeks', value: newValue}) }
+                                            value={ settings.defaultUnits.weeks }/>
+                                    </FlexBlock>
+                                    <FlexBlock style={{width: '300px'}}>
+                                        <TextControl
+                                            label={
+                                                <ToggleControl
+                                                    __nextHasNoMarginBottom
+                                                    label='Days'
+                                                    checked={settings?.enabledUnits?.includes('days') ?? false}
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_ENABLED_UNITS', key: 'days', checked: newValue}) }/>
+                                            }
+                                            __next40pxDefaultSize
                                             onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'days', value: newValue}) }
                                             value={ settings.defaultUnits.days }/>
                                     </FlexBlock>
-                                    <FlexBlock>
+                                    <FlexBlock style={{width: '300px'}}>
                                         <TextControl
-                                            label="Hours"
+                                            label={
+                                                <ToggleControl
+                                                    __nextHasNoMarginBottom
+                                                    label='Hours'
+                                                    checked={settings?.enabledUnits?.includes('hours') ?? false}
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_ENABLED_UNITS', key: 'hours', checked: newValue}) }/>
+                                            }
                                             __next40pxDefaultSize
-                                            help="The text that is displayed for 'Hours'"
                                             onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'hours', value: newValue}) }
                                             value={ settings.defaultUnits.hours }/>
                                     </FlexBlock>
-                                    <FlexBlock>
+                                    <FlexBlock style={{width: '300px'}}>
                                         <TextControl
-                                            label="Minutes"
+                                            label={
+                                                <ToggleControl
+                                                    __nextHasNoMarginBottom
+                                                    label='Minutes'
+                                                    checked={settings?.enabledUnits?.includes('minutes') ?? false}
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_ENABLED_UNITS', key: 'minutes', checked: newValue}) }/>
+                                            }
                                             __next40pxDefaultSize
-                                            help="The text that is displayed for 'Minutes'"
                                             onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'minutes', value: newValue}) }
                                             value={ settings.defaultUnits.minutes }/>
                                     </FlexBlock>
-                                    <FlexBlock>
+                                    <FlexBlock style={{width: '300px'}}>
                                         <TextControl
-                                            label="Seconds"
+                                            label={
+                                                <ToggleControl
+                                                    __nextHasNoMarginBottom
+                                                    label='Seconds'
+                                                    checked={settings?.enabledUnits?.includes('seconds') ?? false}
+                                                    onChange={ ( newValue ) => dispatch({ type: 'UPDATE_ENABLED_UNITS', key: 'seconds', checked: newValue}) }/>
+                                            }
                                             __next40pxDefaultSize
-                                            help="The text that is displayed for 'Seconds'"
                                             onChange={ ( newValue ) => dispatch({ type: 'UPDATE_SETTING', group: 'defaultUnits', key: 'seconds', value: newValue}) }
                                             value={ settings.defaultUnits.seconds }/>
                                     </FlexBlock>

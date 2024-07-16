@@ -1,2 +1,8 @@
 # backlog
 src/wp-blocks
+# Million Lint
+.million
+
+node_modules
+package.json
+package-lock.json

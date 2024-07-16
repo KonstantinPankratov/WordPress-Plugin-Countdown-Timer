@@ -57,42 +57,17 @@ class PostType {
         add_meta_box(
             'the-cdt-general-settings',
             __('Shortcode', self::$post_type_slug),
-            array(__CLASS__, 'general_settings_meta_box_content'),
+            array(__CLASS__, 'shortcode_meta_box'),
             self::$post_type_slug,
             'side'
         );
     }
 
-    public static function general_settings_meta_box_content($post)
+    public static function shortcode_meta_box($post)
     {
         echo sprintf("<input type='text' readonly value='[the-countdown-timer id=%d]' class='large-text'>", $post->ID);
     }
 }
-
-// // Save meta box data
-// function custom_post_manager_save_meta_box_data($post_id) {
-//     if (!isset($_POST['custom_post_manager_meta_box_nonce'])) {
-//         return;
-//     }
-//     if (!wp_verify_nonce($_POST['custom_post_manager_meta_box_nonce'], 'custom_post_manager_save_meta_box_data')) {
-//         return;
-//     }
-//     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-//         return;
-//     }
-//     if (!current_user_can('edit_post', $post_id)) {
-//         return;
-//     }
-
-//     if (!isset($_POST['custom_post_manager_new_field'])) {
-//         return;
-//     }
-
-//     $data = sanitize_text_field($_POST['custom_post_manager_new_field']);
-
-//     update_post_meta($post_id, '_custom_post_meta_key', $data);
-// }
-// add_action('save_post', 'custom_post_manager_save_meta_box_data');
 
 // Load configurator react component styles
 

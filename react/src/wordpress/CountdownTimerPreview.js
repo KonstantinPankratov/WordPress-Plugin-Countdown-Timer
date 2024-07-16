@@ -1,10 +1,9 @@
-import { useEffect, useState } from '@wordpress/element';
 import CountdownTimer from '../timer/CountdownTimer';
 import { useCountdown } from '../timer/hooks/useCountdown';
 import { Card, CardBody, CardFooter, CardHeader } from '@wordpress/components';
 
 const CountdownTimerPreview = ({ settings, preview }) => {
-	const { expired } = useCountdown(settings.datetime, settings.timezone);
+	const { expired } = useCountdown(settings.datetime, settings.timezone, settings.enabledUnits);
     
     return (
     <Card style={{ marginBottom: '10px' }}>

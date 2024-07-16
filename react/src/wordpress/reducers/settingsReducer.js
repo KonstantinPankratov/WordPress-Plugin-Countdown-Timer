@@ -21,6 +21,17 @@ export function settingsReducer(state, action) {
                 ...state,
                 ...value
             };
+        case 'UPDATE_ENABLED_UNITS':
+            const { checked } = action;
+            const enabledUnits = state['enabledUnits'] ?? [];
+            const newUnits = checked
+                ? [...enabledUnits, key]
+                    : enabledUnits.filter((u) => u!== key);
+            const sortedUnits = ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds'].filter(unit => newUnits.includes(unit));
+            return {
+                ...state,
+                'enabledUnits': sortedUnits
+            };
         case 'UPDATE_UNITS_TRANSLATION':
             const { lang, unit } = action;
             return {

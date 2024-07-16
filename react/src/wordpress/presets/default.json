@@ -1,7 +1,11 @@
 {
     "datetime": "2024-06-31T16:27",
     "timezone": "UTC",
+    "enabledUnits": ["days", "hours", "minutes", "seconds"],
     "defaultUnits": {
+        "years": "Years",
+        "months": "Months",
+        "weeks": "Weeks",
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
