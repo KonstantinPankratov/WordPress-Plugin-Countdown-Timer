@@ -1,7 +1,14 @@
 <?php
 
-function the_cdt_load_scripts() {
+function the_cdt_load_scripts($type = 'default')
+{
     $manifest_path = THE_CDT_PLUGIN_COMPONENTS_BUILD_PATH . '/.vite/manifest.json';
+
+    $bundleKey = 'src/the-cdt.tsx';
+
+    if ($type === 'editor') {
+        $bundleKey = 'src/the-cdt-editor.tsx';
+    }
 
     function the_cdt_enqueue_bundle($manifest, $bundle, $depth = 0)
     {
@@ -11,7 +18,7 @@ function the_cdt_load_scripts() {
 
         $jsFile = $bundle['file'];
         $cssFiles = isset($bundle['css']) ? $bundle['css'] : [];
-        $scriptTag = basename($jsFile);
+        $scriptTag = $depth === 0 ? 'the-countdown-timer' : basename($jsFile);
 
         if (wp_script_is($scriptTag, 'enqueued')) {
             return;
@@ -53,10 +60,10 @@ function the_cdt_load_scripts() {
     if (file_exists($manifest_path)) {
         $manifest = json_decode(file_get_contents($manifest_path), true);
 
-        if (!isset($manifest['src/the-cdt-editor.tsx'])) {
+        if (!isset($manifest[$bundleKey])) {
             return;
         }
 
-        the_cdt_enqueue_bundle($manifest, $manifest['src/the-cdt-editor.tsx']);
+        the_cdt_enqueue_bundle($manifest, $manifest[$bundleKey]);
     }
 }

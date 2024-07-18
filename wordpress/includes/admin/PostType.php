@@ -77,7 +77,7 @@ add_action('admin_enqueue_scripts', function ($hook) {
     if ($hook === 'post-new.php' || $hook === 'post.php') {
         if (isset($post) && $post->post_type === 'the_countdown_timer') {
 
-            the_cdt_load_scripts();
+            the_cdt_load_scripts('editor');
 
             $config = null;
 
