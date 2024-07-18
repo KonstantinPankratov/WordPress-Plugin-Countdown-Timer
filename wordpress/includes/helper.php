@@ -1,44 +1,62 @@
 <?php
 
 function the_cdt_load_scripts() {
-    $scripts_tag = 'the-countdown-timer';
+    $manifest_path = THE_CDT_PLUGIN_COMPONENTS_BUILD_PATH . '/.vite/manifest.json';
 
-    if (!wp_script_is($scripts_tag, 'enqueued')) {
-        $manifest_path = THE_CDT_PLUGIN_COMPONENTS_BUILD_PATH . '/.vite/manifest.json';
+    function the_cdt_enqueue_bundle($manifest, $bundle, $depth = 0)
+    {
+        if ($depth > 3) {
+            return;
+        }
 
-        if (file_exists($manifest_path)) {
-            $manifest = json_decode(file_get_contents($manifest_path), true);
+        $jsFile = $bundle['file'];
+        $cssFiles = isset($bundle['css']) ? $bundle['css'] : [];
+        $scriptTag = basename($jsFile);
 
-            if (!isset($manifest['index.html']))
-                return;
+        if (wp_script_is($scriptTag, 'enqueued')) {
+            return;
+        }
 
-            // Get the main JS and CSS files from the manifest
-            $main_js = $manifest['index.html']['file'];
-            $main_css = isset($manifest['index.html']['css']) ? $manifest['index.html']['css'] : [];
+        wp_enqueue_script(
+            $scriptTag,
+            THE_CDT_PLUGIN_COMPONENTS_BUILD_URL .'/'. $jsFile,
+            ['wp-element'],
+            null,
+            true
+        );
 
-            wp_enqueue_script(
-                $scripts_tag,
-                THE_CDT_PLUGIN_COMPONENTS_BUILD_URL .'/'. $main_js,
-                ['wp-element'],
-                null,
-                true
+        add_filter('script_loader_tag', function ($tag, $handle, $src) use ($scriptTag) {
+            if ($scriptTag !== $handle) {
+                return $tag;
+            }
+            return '<script type="module" src="' . esc_url($src) . '" id="' . $handle . '-js"></script>';
+        }, 10, 3);
+
+        foreach ($cssFiles as $cssFile) {
+            wp_enqueue_style(
+                basename($cssFile),
+                THE_CDT_PLUGIN_COMPONENTS_BUILD_URL .'/'. $cssFile,
+                [],
+                null
             );
+        }
 
-            add_filter('script_loader_tag', function ($tag, $handle, $src) use ($scripts_tag) {
-                if ($scripts_tag !== $handle) {
-                    return $tag;
+        if (isset($bundle['imports'])) {
+            foreach ($bundle['imports'] as $import) {
+                if (isset($manifest[$import])) {
+                    the_cdt_enqueue_bundle($manifest, $manifest[$import], ++$depth);
                 }
-                return '<script type="module" src="' . esc_url($src) . '" id="' . $handle . '-js"></script>';
-            }, 10, 3);
-
-            foreach ($main_css as $key => $path) {
-                wp_enqueue_style(
-                    $scripts_tag . $key,
-                    THE_CDT_PLUGIN_COMPONENTS_BUILD_URL .'/'. $path,
-                    [],
-                    null
-                );
             }
         }
+    }
+
+    if (file_exists($manifest_path)) {
+        $manifest = json_decode(file_get_contents($manifest_path), true);
+
+        if (!isset($manifest['src/the-cdt-editor.tsx'])) {
+            return;
+        }
+
+        the_cdt_enqueue_bundle($manifest, $manifest['src/the-cdt-editor.tsx']);
     }
 }
