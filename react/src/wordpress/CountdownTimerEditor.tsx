@@ -34,20 +34,21 @@ import settingsReducer, { EAction } from './reducers/settingsReducer';
 import _defaultPreset from './presets/default';
 import './css/editor.css';
 import IConfig from '../types/config';
+import { configMerger } from '../utils/configMerger';
 
 declare global {
     interface Window {
         theCountdownTimerData: {
-            config: IConfig;
+            config: Partial<IConfig>;
             wpTimezoneName: string;
-            wpTimezoneOffset: number;
+            wpTimezoneOffset: string;
         };
     }
 }
 
-const { config, wpTimezoneName, wpTimezoneOffset } = window.theCountdownTimerData || {};
+const { config: loadedConfig, wpTimezoneName, wpTimezoneOffset } = window.theCountdownTimerData || {};
 
-const defaultTimezone = wpTimezoneName ? 
+const defaultTimezone: string = wpTimezoneName ? 
                             wpTimezoneName : 
                             wpTimezoneOffset ? 
                                 wpTimezoneOffset : 
@@ -55,18 +56,20 @@ const defaultTimezone = wpTimezoneName ?
                                     Intl.DateTimeFormat().resolvedOptions().timeZone :
                                     'UTC+0:00';
 
-const initialConfig = {
+const initialConfig: IConfig = {
     ..._defaultPreset,
     timezone: defaultTimezone,
     datetime: new Date(Date.now() + 95000000).toISOString().split('.')[0]
 };
+
+const config: IConfig = loadedConfig ? configMerger(_defaultPreset, loadedConfig) : initialConfig;
 
 const CountdownTimerEditor = () => {
     const configInputRef = useRef<HTMLInputElement>(null);
     const [ openedPanel, togglePanel ] = useState<string>('');
     const [ previewBg, setPreviewBg ] = useState<string>('');
 
-    const [settings, dispatch] = useReducer(settingsReducer, config ?? initialConfig);
+    const [settings, dispatch] = useReducer(settingsReducer, config);
 
     useEffect(() => {
         if (configInputRef.current) {
@@ -108,7 +111,7 @@ const CountdownTimerEditor = () => {
                                     allowReset={false}
                                     options={ timezoneListOptions }
                                     onChange={ ( newValue ) => dispatch({ type: EAction.UPDATE_SETTING, key: 'timezone', value: newValue}) }
-                                    value={ settings.timezone ?? 'UTC+0:00' }/>
+                                    value={ settings.timezone }/>
                             </FlexItem>
                         </Flex>
                     </PanelRow>
