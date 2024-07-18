@@ -1,4 +1,6 @@
-{
+import IConfig from "../../types/config";
+
+const defaultPreset: IConfig = {
     "datetime": "2024-06-31T16:27",
     "timezone": "UTC",
     "enabledUnits": ["days", "hours", "minutes", "seconds"],
@@ -13,10 +15,10 @@
     },
     "unitTranslations": {
         "en": {
-            "day": "Days",
-            "hour": "Hours",
-            "minute": "Minutes",
-            "second": "Seconds"
+            "days": "Days",
+            "hours": "Hours",
+            "minutes": "Minutes",
+            "seconds": "Seconds"
         }
     },
     "numbersFont": {
@@ -45,7 +47,7 @@
     },
     "blocks": {
         "background": "transparent",
-        "rounding": "0",
+        "rounding": 0,
         "border": {
             "color": "",
             "width": 0,
@@ -55,16 +57,18 @@
             "color": "",
             "width": 0
         },
-        "padding": "0",
+        "padding": 0,
         "grow": "0",
         "aspectRatio": "auto"
     },
     "container": {
-        "gap": "5",
+        "gap": 5,
         "alignment": "left"
     },
     "expiration": {
         "visibility": "keep",
         "text": ""
     }
-}
+};
+
+export default defaultPreset;

@@ -30,7 +30,7 @@ export interface IBlocks {
     border: Border;
     shadow: Border;
     padding: number;
-    grow: number;
+    grow: string;
     aspectRatio: string;
 }
 
