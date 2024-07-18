@@ -92,7 +92,7 @@ export default function CountdownTimer ({ config }: ICDT)
 			{
 				config.enabledUnits.map((unit) => (
 					<>
-					<CountdownBlock key={unit} size={config.numbersFont.size} style={config.blocks}>
+					<CountdownBlock key={`block-for-${unit}`} size={config.numbersFont.size} style={config.blocks}>
 						<CountdownValue font={config.numbersFont}>{countdown[unit].toString().padStart(2, "0")}</CountdownValue>
 						<CountdownUnit font={config.unitsFont}>{config.defaultUnits[unit]}</CountdownUnit>
 					</CountdownBlock>
@@ -103,6 +103,12 @@ export default function CountdownTimer ({ config }: ICDT)
 			}
 			</div>
 		}
+
+		{ (countdown.expired && config.expiration.visibility === 'text') && <div className='the-cdt' style={{ gap: config.container.gap + 'px', justifyContent: config.container.alignment }}>
+				<CountdownBlock key='block-for-text' size={config.numbersFont.size} style={config.blocks}>
+					{ config.expiration.text }
+				</CountdownBlock>
+			</div>}
 		</>
 	);
 }
