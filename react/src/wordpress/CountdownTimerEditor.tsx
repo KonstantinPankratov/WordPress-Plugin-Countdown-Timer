@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from '@wordpress/element';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import {
     ComboboxControl,
     Tip,

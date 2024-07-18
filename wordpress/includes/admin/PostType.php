@@ -72,51 +72,26 @@ class PostType {
 // Load configurator react component styles
 
 add_action('admin_enqueue_scripts', function ($hook) {
-    global $post_type, $post;
+    global $post;
 
     if ($hook === 'post-new.php' || $hook === 'post.php') {
-        if ($post_type === 'the_countdown_timer') {
+        if (isset($post) && $post->post_type === 'the_countdown_timer') {
 
-            $manifest_path = THE_CDT_PLUGIN_COMPONENTS_BUILD_PATH . '/asset-manifest.json';
+            the_cdt_load_scripts();
 
-            if (file_exists($manifest_path)) {
-                $manifest = json_decode(file_get_contents($manifest_path), true);
+            $config = null;
 
-                // Get the main JS and CSS files from the manifest
-                $main_js = $manifest['files']['main.js'];
-                $main_css = isset($manifest['files']['main.css']) ? $manifest['files']['main.css'] : '';
+            $parsed = json_decode($post->post_content);
 
-                wp_enqueue_script(
-                    'the-countdown-timer',
-                    THE_CDT_PLUGIN_COMPONENTS_BUILD_URL . $main_js,
-                    array('wp-element'),
-                    false,
-                    true
-                );
-
-                if ($main_css) {
-                    wp_enqueue_style(
-                        'the-countdown-timer',
-                        THE_CDT_PLUGIN_COMPONENTS_BUILD_URL . $main_css
-                    );
-                }
-
-                $config = null;
-
-                if (isset($post)) {
-                    $parsed = json_decode($post->post_content);
-
-                    if (json_last_error() === JSON_ERROR_NONE) {
-                        $config = $parsed;
-                    }
-                }
-
-                wp_localize_script('the-countdown-timer', 'theCountdownTimerData', array(
-                    'config' => $config,
-                    'wpTimezoneName' => get_option('timezone_string') ?? null,
-                    'wpTimezoneOffset' => get_option('gmt_offset') ? format_utc_offset(get_option('gmt_offset')) : null
-                ));
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $config = $parsed;
             }
+
+            wp_localize_script('the-countdown-timer', 'theCountdownTimerData', array(
+                'config' => $config,
+                'wpTimezoneName' => get_option('timezone_string') ?? null,
+                'wpTimezoneOffset' => get_option('gmt_offset') ? format_utc_offset(get_option('gmt_offset')) : null
+            ));
         }
     }
 });

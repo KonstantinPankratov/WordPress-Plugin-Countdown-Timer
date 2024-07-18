@@ -14,32 +14,7 @@ function the_countdown_timer_shortcode($atts)
         return '';
     }
 
-    if (!wp_script_is('the-countdown-timer', 'enqueued')) {
-        $manifest_path = THE_CDT_PLUGIN_COMPONENTS_BUILD_PATH . '/asset-manifest.json';
-
-        if (file_exists($manifest_path)) {
-            $manifest = json_decode(file_get_contents($manifest_path), true);
-
-            // Get the main JS and CSS files from the manifest
-            $main_js = $manifest['files']['main.js'];
-            $main_css = isset($manifest['files']['main.css']) ? $manifest['files']['main.css'] : '';
-
-            wp_enqueue_script(
-                'the-countdown-timer',
-                THE_CDT_PLUGIN_COMPONENTS_BUILD_URL . $main_js,
-                array('wp-element'),
-                false,
-                true
-            );
-
-            if ($main_css) {
-                wp_enqueue_style(
-                    'the-countdown-timer',
-                    THE_CDT_PLUGIN_COMPONENTS_BUILD_URL . $main_css
-                );
-            }
-        }
-    }
+    the_cdt_load_scripts();
 
     json_decode($post->post_content);
 
