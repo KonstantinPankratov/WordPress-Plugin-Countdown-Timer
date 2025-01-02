@@ -526,22 +526,6 @@ const CountdownTimerEditor = () => {
                         </Flex>
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title="Presets"
-                    className={ openedPanel !== 'presets' ? 'is-disabled' : undefined }
-                    opened={openedPanel === 'presets'}
-                    onToggle={(opened) => togglePanel(opened ? 'presets' : '')}>
-                    <PanelRow>
-                        <Flex direction="column" gap={6} style={{ width: '100%' }}>
-                            <FlexBlock>
-                                <Flex wrap={true} gap={6} align='flex-start' justify="unset">
-                                    <FlexItem>
-                                        
-                                    </FlexItem>
-                                </Flex>
-                            </FlexBlock>
-                        </Flex>
-                    </PanelRow>
-                </PanelBody>
                 <PanelBody title="After expiration"
                     className={ openedPanel !== 'expiration' ? 'is-disabled' : undefined }
                     opened={openedPanel === 'expiration'}

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const root = createRoot(container);
         const config = container.getAttribute('data-config');
         if (config !== null) {
-            root.render(<CountdownTimer config={JSON.parse(config)}/>);
+            root.render(<CountdownTimer config={JSON.parse(config)} />);
         }
     });
 });
