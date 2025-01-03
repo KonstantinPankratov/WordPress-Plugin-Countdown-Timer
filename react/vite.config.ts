@@ -6,6 +6,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
+    sourcemap: true,
     manifest: true,
     rollupOptions: {
       input: {
@@ -13,5 +14,5 @@ export default defineConfig({
         editor: resolve(__dirname, './src/the-cdt-editor.tsx'),
       }
     }
-  },
+  }
 })
