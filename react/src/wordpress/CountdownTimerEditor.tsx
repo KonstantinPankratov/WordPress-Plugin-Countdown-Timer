@@ -128,8 +128,8 @@ const CountdownTimerEditor = () => {
                                         <Flex direction="column" gap={6} style={{ width: '100%' }}>
                                             <FlexBlock>
                                                 <ComboboxControl
-                                                    label="Style"
                                                     __next40pxDefaultSize
+                                                    label="Style"
                                                     options={numbersFontWightOptions}
                                                     allowReset={false}
                                                     onChange={(newValue) => dispatch({ type: EAction.UPDATE_SETTING, group: 'numbersFont', key: 'weight', value: newValue })}
@@ -137,8 +137,8 @@ const CountdownTimerEditor = () => {
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <FontSizePicker
-                                                    fontSizes={numbersFontSizeOptions}
                                                     __next40pxDefaultSize
+                                                    fontSizes={numbersFontSizeOptions}
                                                     withReset={false}
                                                     units={['px']}
                                                     onChange={(newValue) => dispatch({ type: EAction.UPDATE_SETTING, group: 'numbersFont', key: 'size', value: newValue })}
@@ -428,6 +428,7 @@ const CountdownTimerEditor = () => {
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <BorderControl
+                                                    __next40pxDefaultSize
                                                     shouldSanitizeBorder
                                                     label="Border"
                                                     disableUnits={true}
@@ -437,6 +438,7 @@ const CountdownTimerEditor = () => {
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <BorderControl
+                                                    __next40pxDefaultSize
                                                     label="Shadow"
                                                     enableStyle={false}
                                                     disableUnits={true}
@@ -474,6 +476,7 @@ const CountdownTimerEditor = () => {
                                         <Flex direction="column" gap={6} style={{ width: '100%' }}>
                                             <FlexBlock>
                                                 <ToggleGroupControl
+                                                    __next40pxDefaultSize
                                                     isBlock
                                                     label="Alignment"
                                                     onChange={(newValue) => dispatch({ type: EAction.UPDATE_SETTING, group: 'container', key: 'alignment', value: newValue })}
@@ -491,6 +494,7 @@ const CountdownTimerEditor = () => {
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <ToggleGroupControl
+                                                    __next40pxDefaultSize
                                                     isBlock
                                                     label="Distribution"
                                                     onChange={(newValue) => dispatch({ type: EAction.UPDATE_SETTING, group: 'blocks', key: 'grow', value: newValue })}
@@ -505,6 +509,7 @@ const CountdownTimerEditor = () => {
                                             </FlexBlock>
                                             <FlexBlock>
                                                 <ToggleGroupControl
+                                                    __next40pxDefaultSize
                                                     help={<>
                                                         Some older versions of browsers do not support this property. You can check the current level of support by clicking <a target='_blank' rel='noreferrer' href='https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio#browser_compatibility'>here</a>
                                                     </>}
