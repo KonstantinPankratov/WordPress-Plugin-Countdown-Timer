@@ -586,7 +586,6 @@ const CountdownTimerEditor = () => {
                         </Flex>
                     </PanelRow>
                 </PanelBody>
-                <PanelBody title="Animations coming soon" buttonProps={{ disabled: true }} opened={false}></PanelBody>
             </Panel>
 
             <input type="hidden" name="content" ref={configInputRef} />
