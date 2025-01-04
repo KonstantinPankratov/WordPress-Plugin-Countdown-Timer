@@ -13,14 +13,6 @@ const defaultPreset: IConfig = {
         "minutes": "Minutes",
         "seconds": "Seconds"
     },
-    "unitTranslations": {
-        "en": {
-            "days": "Days",
-            "hours": "Hours",
-            "minutes": "Minutes",
-            "seconds": "Seconds"
-        }
-    },
     "numbersFont": {
         "family": "monospace",
         "weight": "700",
