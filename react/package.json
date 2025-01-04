@@ -9,7 +9,7 @@
     "build-watch": "vite build --watch",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "vitest"
   },
   "dependencies": {
     "@wordpress/components": "^29.1.1",
@@ -21,7 +21,6 @@
     "react-scripts": "^5.0.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
     "@types/luxon": "^3.4.2",
@@ -35,6 +34,7 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "sass": "^1.83.0",
     "typescript": "^4.9.5",
-    "vite": "^6.0.7"
+    "vite": "^6.0.7",
+    "vitest": "^2.1.8"
   }
 }
