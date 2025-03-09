@@ -2,7 +2,7 @@ import { CSSProperties } from "react";
 import { ICDTBlock } from "../types/countdown";
 
 export default function CountdownBlock({ size, style, children }: ICDTBlock) {
-  const boxShadow = (style.shadow.width || style.shadow.width === 0) ? `0 0 ${style.shadow.width} ${style.shadow.color}` : 'none';
+  const boxShadow = (style.shadow.width && style.shadow.color) ? `0 0 ${style.shadow.width}px ${style.shadow.color}` : 'none';
 
   return (
     <div className="the-cdt-block" style={{

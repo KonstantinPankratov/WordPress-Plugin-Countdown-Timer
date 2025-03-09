@@ -286,10 +286,10 @@ export const updateConfigBlocksBorder = (
     key: "blocks",
     value: {
       ...settings.blocks,
-      border: {
-        width: Number(newValue.width?.toString().replace('px', '')), // TODO rework
+      border: { // TODO rework
+        width: (newValue.width) ? Number(newValue.width.toString().replace('px', '')) : 0,
         color: String(newValue.color ?? ''),
-        style: String(newValue.style ?? ''),
+        style: String(newValue.style ?? 'none'),
       }
     }
   }));
@@ -305,9 +305,9 @@ export const updateConfigBlocksShadow = (
     key: "blocks",
     value: {
       ...settings.blocks,
-      shadow: {
-        width: Number(newValue.width),
-        color: String(newValue.color),
+      shadow: { // TODO rework
+        width: (newValue.width) ? Number(newValue.width.toString().replace('px', '')) : 0,
+        color: String(newValue.color ?? ''),
       }
     }
   }));
