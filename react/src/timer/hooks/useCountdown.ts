@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
-import { TUnits } from '../../types/config';
+import { ValidUnits } from '../../types/schemas/units.s';
 
-const useCountdown = (datetime: string, timezone: string, units: TUnits[]) => {
+const useCountdown = (datetime: string, timezone: string, units: ValidUnits[]) => {
   const [remainingTime, setRemainingTime] = useState(getRemainingTime(datetime, timezone, units));
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const useCountdown = (datetime: string, timezone: string, units: TUnits[]) => {
   return remainingTime;
 };
 
-export function getRemainingTime(datetime: string, timezone: string, units: TUnits[]) {
+export function getRemainingTime(datetime: string, timezone: string, units: ValidUnits[]) {
   const targetTime = DateTime.fromISO(datetime, { zone: timezone });
   const now = DateTime.now().setZone(timezone);
   const diff = targetTime.diff(now, units);
