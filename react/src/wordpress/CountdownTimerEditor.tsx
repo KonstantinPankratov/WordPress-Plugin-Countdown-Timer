@@ -20,6 +20,7 @@ import {
   __experimentalToggleGroupControlOption as ToggleGroupControlOption,
   ToggleControl,
   BorderControl,
+  Button,
 } from '@wordpress/components';
 import '@wordpress/components/build-style/style.css';
 import {
@@ -658,6 +659,14 @@ const CountdownTimerEditor = () => {
               </FlexBlock>
             </Flex>
           </PanelRow>
+        </PanelBody>
+        <PanelBody title="Show Some Love ❤️"
+          className={openedPanel !== 'donate' ? 'is-disabled' : undefined}
+          opened={openedPanel === 'donate'}
+          onToggle={(opened) => togglePanel(opened ? 'donate' : '')}>
+          <h4>Hey there, I hope you didn't click this tab by accident 😁</h4>
+          <p>Your support is the <i>heartbeat</i> of this project. If you find it useful, please consider making a <i>small donation</i>. Your kindness <i>keeps</i> this project <i>alive</i> and kicking!</p>
+          <Button href='https://buymeacoffee.com/ko.pa' variant='primary' target='_blank'>I want to support</Button>
         </PanelBody>
       </Panel>
 
