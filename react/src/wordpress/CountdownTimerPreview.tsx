@@ -14,9 +14,9 @@ const CountdownTimerPreview = ({ settings, preview }: ICountdownTimerPreview) =>
   const { expired } = useCountdown(settings.datetime!, settings.timezone!, settings.enabledUnits);
 
   return (
-    <Card style={{ marginBottom: '10px' }}>
-      <CardHeader>Preview</CardHeader>
-      <CardBody style={{ backgroundColor: preview.bg }}>
+    <Card style={{ marginBottom: '40px' }}>
+      <CardHeader><b>Preview</b></CardHeader>
+      <CardBody style={{ backgroundColor: preview.bg, overflowX: 'auto' }}>
         <CountdownTimer config={settings} />
       </CardBody>
       {expired && <CardFooter isShady={true} size="small"><small>Why are zeros displayed? Set <u>future</u> date &amp; time.</small></CardFooter>}
