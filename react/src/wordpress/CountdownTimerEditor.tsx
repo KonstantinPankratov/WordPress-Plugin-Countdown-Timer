@@ -607,6 +607,9 @@ const CountdownTimerEditor = () => {
           }
           value={settings.expiration.text} />
       </FlexBlock>}
+      <FlexBlock>
+        <Tip>To see it in action, set an <u>expired time</u> in the "Date & time, time zone" tab.</Tip>
+      </FlexBlock>
     </Flex>
   );
 
