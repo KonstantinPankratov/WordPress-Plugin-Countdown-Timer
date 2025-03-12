@@ -65,7 +65,7 @@ class PostType {
 
     public static function shortcode_meta_box($post)
     {
-        echo sprintf("<input type='text' readonly value='[the-countdown-timer id=%d]' class='large-text'>", $post->ID);
+        echo sprintf("<input type='text' readonly value='%s' class='large-text'>", esc_attr("[the-countdown-timer id={$post->ID}]"));
     }
 }
 

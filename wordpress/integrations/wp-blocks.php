@@ -61,6 +61,12 @@ function date_counter_register_dynamic_blocks_render_callback( $attributes, $con
 	$id = str_replace('/', '-', $block_instance->name);
 
 	ob_start();
-	echo "<p class=\"{$id}\" data-datetime=\"{$attributes['dateTime']}\" data-delimiter=\"{$attributes['delimiter']}\" data-style=\"{$attributes['style']}\"></p>";
+    printf(
+        '<p class="%s" data-datetime="%s" data-delimiter="%s" data-style="%s"></p>',
+        esc_attr( $id ),
+        esc_attr( $attributes['dateTime'] ),
+        esc_attr( $attributes['delimiter'] ),
+        esc_attr( $attributes['style'] )
+    );
 	return ob_get_clean();
 }
