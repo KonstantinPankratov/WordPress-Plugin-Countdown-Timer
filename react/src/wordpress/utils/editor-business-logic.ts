@@ -35,7 +35,7 @@ export const updateConfigDefaultUnits = (
   unit: ValidUnits,
   newValue: string | undefined | null
 ) => {
-  if (!newValue) return;
+  if (!newValue) newValue = '';
   dispatch(updateSetting({ key: "defaultUnits", value: { ...settings.defaultUnits, [unit]: newValue } }));
 };
 
@@ -141,8 +141,7 @@ export const updateConfigSeparatorSymbol = (
   type: keyof SeparatorConfig,
   newSymbol: string | null | undefined
 ) => {
-  if (!newSymbol) return;
-
+  if (!newSymbol) newSymbol = '';
   const newSeparators: SeparatorConfig = {
     ...settings.separators,
     [type]: {
