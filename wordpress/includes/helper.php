@@ -23,21 +23,20 @@ function the_cdt_load_scripts($type = 'default')
         if (wp_script_is($scriptTag, 'enqueued')) {
             return;
         }
-
-        wp_enqueue_script(
-            $scriptTag,
-            THE_CDT_PLUGIN_COMPONENTS_BUILD_URL .'/'. $jsFile,
-            ['wp-element'],
-            null,
-            true
-        );
-
-        add_filter('script_loader_tag', function ($tag, $handle, $src) use ($scriptTag) {
-            if ($scriptTag !== $handle) {
+        
+        if (function_exists('wp_register_script_module')) { // wp_register_script_module & wp_enqueue_script_module (WP6.5+)
+            wp_register_script_module($scriptTag, THE_CDT_PLUGIN_COMPONENTS_BUILD_URL .'/'. $jsFile, ['wp-element'], null, true);
+            wp_enqueue_script_module($scriptTag);
+        } else {
+            wp_register_script($scriptTag, THE_CDT_PLUGIN_COMPONENTS_BUILD_URL .'/'. $jsFile, ['wp-element'], null, true);
+            wp_enqueue_script($scriptTag);
+            add_filter('script_loader_tag', function ($tag, $handle, $src) use ($scriptTag) {
+                if ($handle === $scriptTag) {
+                    return str_replace('<script ', '<script type="module" ', $tag);
+                }
                 return $tag;
-            }
-            return '<script type="module" src="' . esc_url($src) . '" id="' . $handle . '-js"></script>';
-        }, 10, 3);
+            }, 10, 3);
+        }
 
         foreach ($cssFiles as $cssFile) {
             wp_enqueue_style(
