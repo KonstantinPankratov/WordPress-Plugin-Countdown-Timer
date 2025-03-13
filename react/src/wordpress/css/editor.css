@@ -5,3 +5,8 @@
 #post .the-countdown-timer-editor-component h2 {
     padding: 0;
 }
+
+#post .the-countdown-timer-editor-component .components-tab-panel__tabs {
+    white-space: nowrap;
+    overflow-x: auto;
+}
