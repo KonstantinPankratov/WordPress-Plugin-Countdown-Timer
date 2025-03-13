@@ -65,7 +65,7 @@ class PostType {
 
     public static function shortcode_meta_box($post)
     {
-        echo sprintf("<input type='text' readonly value='%s' class='large-text'>", esc_attr("[the-countdown-timer id={$post->ID}]"));
+        echo the_cdt_shortcode_input($post->ID);
     }
 }
 
@@ -107,3 +107,24 @@ add_action('edit_form_advanced', function ($post) {
         echo '<div class="the-countdown-timer-editor-component"></div>';
     }
 });
+
+// Add custom columns
+add_filter('manage_the_countdown_timer_posts_columns', function ($columns) {
+    $columns['shortcode'] = __('Shortcode', 'the-countdown-timer');
+    return $columns;
+});
+
+// Fill custom columns
+add_action('manage_the_countdown_timer_posts_custom_column', function ($column, $post_id) {
+    if ($column === 'shortcode') {
+        echo the_cdt_shortcode_input($post_id);
+    }
+}, 10, 2);
+
+function the_cdt_shortcode_input($post_id) {
+    $shortcode = sprintf("[the-countdown-timer id=%d]", $post_id);
+    return sprintf(
+        "<input type='text' readonly value='%s' class='large-text' onclick='this.select(); document.execCommand(\"copy\");'>",
+        esc_attr($shortcode)
+    );
+}
