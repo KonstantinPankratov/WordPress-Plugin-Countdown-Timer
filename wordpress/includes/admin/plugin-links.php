@@ -9,12 +9,12 @@ function the_cdt_plugin_links($links) {
     $links[] = sprintf(
         '<a href="%s">%s</a>',
         esc_url($list_all_url),
-        __('All timers', 'the_countdown_timer')
+        __('All timers', 'WordPress-Plugin-Countdown-Timer')
     );
     $links[] = sprintf(
         '<a href="%s">%s</a>',
         esc_url($add_new_url),
-        __('Create timer', 'the_countdown_timer')
+        __('Create timer', 'WordPress-Plugin-Countdown-Timer')
     );
     return $links;
 }
