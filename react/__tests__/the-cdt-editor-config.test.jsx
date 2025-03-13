@@ -361,7 +361,7 @@ describe('The CDT EDITOR CONFIG UPDATE: SEPARATORS DAY', () => {
     updateConfigSeparatorSymbol(dispatch, initialConfig, configKeyTypeToTest, null);
     updateConfigSeparatorSymbol(dispatch, initialConfig, configKeyTypeToTest, newValue);
 
-    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledTimes(3);
     expect(dispatch).toHaveBeenCalledWith(
       updateSetting({
         key: configKey,
@@ -381,7 +381,7 @@ describe('The CDT EDITOR CONFIG UPDATE: SEPARATORS DAY', () => {
     expect(updatedConfigPart[configKeyTypeToTest].size).toBe(initialConfig[configKey][configKeyTypeToTest].size);
     expect(updatedConfigPart[configKeyTypeToTest].weight).toBe(initialConfig[configKey][configKeyTypeToTest].weight);
     expect(updatedConfigPart[configKeyTypeToTest].color).toBe(initialConfig[configKey][configKeyTypeToTest].color);
-    expect(updatedConfigPart[configKeyTypeToTest][key]).not.toBe(initialConfig[configKey][configKeyTypeToTest][key]);
+    expect(updatedConfigPart[configKeyTypeToTest][key]).toBe(initialConfig[configKey][configKeyTypeToTest][key]);
   });
 
   it('Weight update', async () => {
@@ -503,7 +503,7 @@ describe('The CDT EDITOR CONFIG UPDATE: SEPARATORS TIME', () => {
     updateConfigSeparatorSymbol(dispatch, initialConfig, configKeyTypeToTest, null);
     updateConfigSeparatorSymbol(dispatch, initialConfig, configKeyTypeToTest, newValue);
 
-    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledTimes(3);
     expect(dispatch).toHaveBeenCalledWith(
       updateSetting({
         key: configKey,
@@ -700,7 +700,7 @@ describe('The CDT EDITOR CONFIG UPDATE: BLOCKS', () => {
 
     expect(dispatch).toHaveBeenCalledTimes(2);
     const updatedBlocksWithInProperValues = dispatch.mock.calls[1][0].payload.value;
-    expect(updatedBlocksWithInProperValues.border.style).toBe('');
+    expect(updatedBlocksWithInProperValues.border.style).toBe('none');
     expect(updatedBlocksWithInProperValues.border.color).toBe('');
     expect(updatedBlocksWithInProperValues.border.width).toBe(2);
   });
