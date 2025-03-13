@@ -10,4 +10,7 @@ License: GPLv2 or later
 */
 if (!defined('ABSPATH')) exit;
 
-require_once plugin_dir_path(__FILE__) . '/wordpress/init.php';
+define( 'THE_CDT_MAIN_FILE', __FILE__ );
+define( 'THE_CDT_PATH', plugin_dir_path(__FILE__) );
+
+require_once THE_CDT_PATH . '/wordpress/init.php';

@@ -11,6 +11,7 @@ define('THE_CDT_PLUGIN_COMPONENTS_BUILD_URL', THE_CDT_PLUGIN_URL . '../react/dis
 
 require_once THE_CDT_PLUGIN_PATH . 'includes/helper.php';
 require_once THE_CDT_PLUGIN_PATH . 'includes/admin/post-type.php';
+require_once THE_CDT_PLUGIN_PATH . 'includes/admin/plugin-links.php';
 require_once THE_CDT_PLUGIN_PATH . 'integrations/wp-shortcode.php';
 
 PostType::register();
