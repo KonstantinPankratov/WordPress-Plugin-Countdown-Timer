@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: The Countdown Timer
-Description: Add countdown timer to your website
+Description: The only countdown timer you'll ever need!
 Version: 1.0.0
 Author: Konstantin Pankratov
 Author URI: http://kopa.pw/
