@@ -154,8 +154,8 @@ const CountdownTimerEditor = () => {
   const UnitSettings = (
     <Flex direction="column" gap={6} style={{ width: '100%' }}>
       <FlexBlock>
-        <Flex wrap={true} gap={6} align='flex-start' justify="unset" direction='row'>
-          <FlexBlock style={{ width: '120px' }}>
+        <Flex wrap={true} gap={6} justify='unset'>
+          <FlexItem style={{ minWidth: '120px' }}>
             <TextControl
               label={
                 <ToggleControl
@@ -171,8 +171,8 @@ const CountdownTimerEditor = () => {
                 updateConfigDefaultUnits(dispatch, settings, 'years', newValue)
               }
               value={settings.defaultUnits.years ?? ''} />
-          </FlexBlock>
-          <FlexBlock style={{ width: '120px' }}>
+          </FlexItem>
+          <FlexItem style={{ minWidth: '120px' }}>
             <TextControl
               label={
                 <ToggleControl
@@ -188,8 +188,8 @@ const CountdownTimerEditor = () => {
                 updateConfigDefaultUnits(dispatch, settings, 'months', newValue)
               }
               value={settings.defaultUnits.months ?? ''} />
-          </FlexBlock>
-          <FlexBlock style={{ width: '120px' }}>
+          </FlexItem>
+          <FlexItem style={{ minWidth: '120px' }}>
             <TextControl
               label={
                 <ToggleControl
@@ -205,8 +205,8 @@ const CountdownTimerEditor = () => {
                 updateConfigDefaultUnits(dispatch, settings, 'weeks', newValue)
               }
               value={settings.defaultUnits.weeks ?? ''} />
-          </FlexBlock>
-          <FlexBlock style={{ width: '120px' }}>
+          </FlexItem>
+          <FlexItem style={{ minWidth: '120px' }}>
             <TextControl
               label={
                 <ToggleControl
@@ -222,8 +222,8 @@ const CountdownTimerEditor = () => {
                 updateConfigDefaultUnits(dispatch, settings, 'days', newValue)
               }
               value={settings.defaultUnits.days ?? ''} />
-          </FlexBlock>
-          <FlexBlock style={{ width: '120px' }}>
+          </FlexItem>
+          <FlexItem style={{ minWidth: '120px' }}>
             <TextControl
               label={
                 <ToggleControl
@@ -239,8 +239,8 @@ const CountdownTimerEditor = () => {
                 updateConfigDefaultUnits(dispatch, settings, 'hours', newValue)
               }
               value={settings.defaultUnits.hours ?? ''} />
-          </FlexBlock>
-          <FlexBlock style={{ width: '120px' }}>
+          </FlexItem>
+          <FlexItem style={{ minWidth: '120px' }}>
             <TextControl
               label={
                 <ToggleControl
@@ -256,8 +256,8 @@ const CountdownTimerEditor = () => {
                 updateConfigDefaultUnits(dispatch, settings, 'minutes', newValue)
               }
               value={settings.defaultUnits.minutes ?? ''} />
-          </FlexBlock>
-          <FlexBlock style={{ width: '120px' }}>
+          </FlexItem>
+          <FlexItem style={{ minWidth: '120px' }}>
             <TextControl
               label={
                 <ToggleControl
@@ -273,7 +273,7 @@ const CountdownTimerEditor = () => {
                 updateConfigDefaultUnits(dispatch, settings, 'seconds', newValue)
               }
               value={settings.defaultUnits.seconds ?? ''} />
-          </FlexBlock>
+          </FlexItem>
         </Flex>
         <CardDivider margin={5} />
       </FlexBlock>
