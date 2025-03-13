@@ -13,25 +13,25 @@ class PostType {
     public static function create_post_type()
     {
         $labels = array(
-            'name'               => _x('The Countdown Timers', 'Post Type General Name', 'WordPress-Plugin-Countdown-Timer'),
-            'singular_name'      => _x('The Countdown Timer', 'Post Type Singular Name', 'WordPress-Plugin-Countdown-Timer'),
-            'menu_name'          => __('The Countdown Timers', 'WordPress-Plugin-Countdown-Timer'),
-            'name_admin_bar'     => __('The Countdown Timer', 'WordPress-Plugin-Countdown-Timer'),
-            'archives'           => __('The Countdown Timer Archives', 'WordPress-Plugin-Countdown-Timer'),
-            'attributes'         => __('The Countdown Timer Attributes', 'WordPress-Plugin-Countdown-Timer'),
-            'parent_item_colon'  => __('Parent Timer:', 'WordPress-Plugin-Countdown-Timer'),
-            'all_items'          => __('The Countdown Timers', 'WordPress-Plugin-Countdown-Timer'),
-            'add_new_item'       => __('Add New Countdown Timer', 'WordPress-Plugin-Countdown-Timer'),
-            'add_new'            => __('Add New', 'WordPress-Plugin-Countdown-Timer'),
-            'new_item'           => __('New Countdown Timer', 'WordPress-Plugin-Countdown-Timer'),
-            'edit_item'          => __('Edit Countdown Timer', 'WordPress-Plugin-Countdown-Timer'),
-            'update_item'        => __('Update Countdown Timer', 'WordPress-Plugin-Countdown-Timer'),
-            'search_items'       => __('Search Countdown Timer', 'WordPress-Plugin-Countdown-Timer'),
+            'name'               => _x('The Countdown Timers', 'Post Type General Name', 'the-countdown-timer'),
+            'singular_name'      => _x('The Countdown Timer', 'Post Type Singular Name', 'the-countdown-timer'),
+            'menu_name'          => __('The Countdown Timers', 'the-countdown-timer'),
+            'name_admin_bar'     => __('The Countdown Timer', 'the-countdown-timer'),
+            'archives'           => __('The Countdown Timer Archives', 'the-countdown-timer'),
+            'attributes'         => __('The Countdown Timer Attributes', 'the-countdown-timer'),
+            'parent_item_colon'  => __('Parent Timer:', 'the-countdown-timer'),
+            'all_items'          => __('The Countdown Timers', 'the-countdown-timer'),
+            'add_new_item'       => __('Add New Countdown Timer', 'the-countdown-timer'),
+            'add_new'            => __('Add New', 'the-countdown-timer'),
+            'new_item'           => __('New Countdown Timer', 'the-countdown-timer'),
+            'edit_item'          => __('Edit Countdown Timer', 'the-countdown-timer'),
+            'update_item'        => __('Update Countdown Timer', 'the-countdown-timer'),
+            'search_items'       => __('Search Countdown Timer', 'the-countdown-timer'),
         );
     
         $args = array(  
-            'label'              => __('The Countdown Timer', 'WordPress-Plugin-Countdown-Timer'),
-            'description'        => __('-', 'WordPress-Plugin-Countdown-Timer'),
+            'label'              => __('The Countdown Timer', 'the-countdown-timer'),
+            'description'        => __('-', 'the-countdown-timer'),
             'labels'             => $labels,
             'supports'           => array('title'),
             'show_ui'            => true,
@@ -56,7 +56,7 @@ class PostType {
     {
         add_meta_box(
             'the-cdt-general-settings',
-            __('Shortcode', 'WordPress-Plugin-Countdown-Timer'),
+            __('Shortcode', 'the-countdown-timer'),
             array(__CLASS__, 'shortcode_meta_box'),
             self::$post_type_slug,
             'side'
