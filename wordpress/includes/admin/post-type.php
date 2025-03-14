@@ -75,7 +75,7 @@ add_action('admin_enqueue_scripts', function ($hook) {
     global $post;
 
     if ($hook === 'post-new.php' || $hook === 'post.php') {
-        if (isset($post) && $post->post_type === 'the_countdown_timer') {
+        if (isset($post) && $post->post_type === PostType::$post_type_slug) {
 
             the_cdt_load_scripts('editor');
 
@@ -103,19 +103,19 @@ function format_utc_offset($offset) {
 }
 
 add_action('edit_form_advanced', function ($post) {
-    if ($post->post_type === 'the_countdown_timer') {
+    if ($post->post_type === PostType::$post_type_slug) {
         echo '<div class="the-countdown-timer-editor-component"></div>';
     }
 });
 
 // Add custom columns
-add_filter('manage_the_countdown_timer_posts_columns', function ($columns) {
+add_filter(sprintf('manage_%s_posts_columns', PostType::$post_type_slug), function ($columns) {
     $columns['shortcode'] = __('Shortcode', 'the-countdown-timer');
     return $columns;
 });
 
 // Fill custom columns
-add_action('manage_the_countdown_timer_posts_custom_column', function ($column, $post_id) {
+add_action(sprintf('manage_%s_posts_custom_column', PostType::$post_type_slug), function ($column, $post_id) {
     if ($column === 'shortcode') {
         echo the_cdt_shortcode_input($post_id);
     }
