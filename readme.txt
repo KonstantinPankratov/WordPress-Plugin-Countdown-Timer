@@ -44,6 +44,17 @@ Its main features include:
 2. Go to Plugins & activate The Countdown timer.
 3. Go to Tools > The Countdown Timers to add your first timer.
 
+== Development ==
+This plugin uses React for its front-end interface. The complete unminified source code is available at:
+
+* GitHub repository: https://github.com/KonstantinPankratov/WordPress-Plugin-Countdown-Timer
+
+To build the plugin from source:
+1. Clone the repository
+2. Run `cd react`
+3. Run `npm install`
+4. Run `npm run build`
+
 == Frequently Asked Questions ==
 = How do I configure the countdown timer? =
 After inserting the Countdown Timer block in the editor, use the sidebar options to set the target date, time, time zone, and customize the appearance (fonts, colors, layout, etc.).
