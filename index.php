@@ -4,6 +4,7 @@
 Plugin Name: The Countdown Timer
 Description: The only countdown timer you'll ever need!
 Version: 1.0.0
+Requires PHP: 7.2
 Author: Konstantin Pankratov
 Author URI: http://kopa.pw/
 License: GPLv2 or later
