@@ -2,7 +2,7 @@
 Contributors: pankratovkm
 Tags: countdown, timer, countdown timer
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.8
 Stable tag: 1.0.0
 Requires PHP: 7.2
 License: GPLv2 or later
