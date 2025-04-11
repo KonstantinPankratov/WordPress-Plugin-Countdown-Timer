@@ -1,10 +1,14 @@
 <?php
 
-add_filter('plugin_action_links_' . plugin_basename(THE_CDT_MAIN_FILE), 'the_cdt_plugin_links');
+use THECDT\PostType;
 
-function the_cdt_plugin_links($links) {
-    $list_all_url = admin_url('edit.php?post_type=' . \THE_CDT\PostType::$post_type_slug);
-    $add_new_url   = admin_url('post-new.php?post_type=' . \THE_CDT\PostType::$post_type_slug);
+if (!defined('ABSPATH')) exit;
+
+add_filter('plugin_action_links_' . plugin_basename(THECDT_MAIN_FILE), 'thecdt_plugin_links');
+
+function thecdt_plugin_links($links) {
+    $list_all_url = admin_url('edit.php?post_type=' . PostType::$post_type_slug);
+    $add_new_url   = admin_url('post-new.php?post_type=' . PostType::$post_type_slug);
 
     $links[] = sprintf(
         '<a href="%s">%s</a>',

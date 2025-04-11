@@ -1,8 +1,10 @@
 <?php
 
-function the_cdt_load_scripts($type = 'default')
+if (!defined('ABSPATH')) exit;
+
+function thecdt_load_scripts($type = 'default')
 {
-    $manifest_path = THE_CDT_PLUGIN_COMPONENTS_BUILD_PATH . '/.vite/manifest.json';
+    $manifest_path = THECDT_PLUGIN_COMPONENTS_BUILD_PATH . '/.vite/manifest.json';
 
     $bundleKey = 'src/the-cdt.tsx';
 
@@ -17,11 +19,11 @@ function the_cdt_load_scripts($type = 'default')
             return;
         }
 
-        the_cdt_enqueue_bundle($manifest, $manifest[$bundleKey]);
+        thecdt_enqueue_bundle($manifest, $manifest[$bundleKey]);
     }
 }
 
-function the_cdt_enqueue_bundle($manifest, $bundle, $depth = 0)
+function thecdt_enqueue_bundle($manifest, $bundle, $depth = 0)
 {
     if ($depth > 3) {
         return;
@@ -30,7 +32,7 @@ function the_cdt_enqueue_bundle($manifest, $bundle, $depth = 0)
     $jsFile = $bundle['file'];
     $cssFiles = isset($bundle['css']) ? $bundle['css'] : [];
     $scriptTag = $depth === 0 ? 'the-countdown-timer' : basename($jsFile);
-    $scriptPath = THE_CDT_PLUGIN_COMPONENTS_BUILD_URL . '/' . $jsFile;
+    $scriptPath = THECDT_PLUGIN_COMPONENTS_BUILD_URL . '/' . $jsFile;
     $scriptVersion = file_exists($scriptPath) ? filemtime($scriptPath) : null;
 
     if (wp_script_is($scriptTag, 'enqueued')) {
@@ -46,7 +48,7 @@ function the_cdt_enqueue_bundle($manifest, $bundle, $depth = 0)
         return $tag;
     }, 10, 3);
     foreach ($cssFiles as $cssFile) {
-        $cssPath = THE_CDT_PLUGIN_COMPONENTS_BUILD_URL . '/' . $cssFile;
+        $cssPath = THECDT_PLUGIN_COMPONENTS_BUILD_URL . '/' . $cssFile;
         $cssVersion = file_exists($cssPath) ? filemtime($cssPath) : null;
 
         wp_enqueue_style(
@@ -60,7 +62,7 @@ function the_cdt_enqueue_bundle($manifest, $bundle, $depth = 0)
     if (isset($bundle['imports'])) {
         foreach ($bundle['imports'] as $import) {
             if (isset($manifest[$import])) {
-                the_cdt_enqueue_bundle($manifest, $manifest[$import], ++$depth);
+                thecdt_enqueue_bundle($manifest, $manifest[$import], ++$depth);
             }
         }
     }

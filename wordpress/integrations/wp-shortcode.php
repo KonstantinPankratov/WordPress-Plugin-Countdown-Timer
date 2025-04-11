@@ -1,8 +1,12 @@
 <?php
 
-add_shortcode('the-countdown-timer', 'the_countdown_timer_shortcode');
+use THECDT\PostType;
 
-function the_countdown_timer_shortcode($atts)
+if (!defined('ABSPATH')) exit;
+
+add_shortcode('the-countdown-timer', 'thecdt_shortcode');
+
+function thecdt_shortcode($atts)
 {
     if (is_admin() || !isset($atts['id'])) {
         return '';
@@ -10,11 +14,11 @@ function the_countdown_timer_shortcode($atts)
 
     $post = get_post($atts['id']);
 
-    if (!$post || $post->post_type !== 'the_countdown_timer') {
+    if (!$post || $post->post_type !== PostType::$post_type_slug) {
         return '';
     }
 
-    the_cdt_load_scripts();
+    thecdt_load_scripts();
 
     json_decode($post->post_content);
 

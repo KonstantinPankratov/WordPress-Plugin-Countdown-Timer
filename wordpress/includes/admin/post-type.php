@@ -1,9 +1,11 @@
 <?php
 
-namespace THE_CDT;
+namespace THECDT;
+
+if (!defined('ABSPATH')) exit;
 
 class PostType {
-    public static $post_type_slug = 'the_countdown_timer';
+    public static $post_type_slug = 'thecdt_timer';
 
     public static function register()
     {
@@ -55,7 +57,7 @@ class PostType {
     public static function register_meta_boxes()
     {
         add_meta_box(
-            'the-cdt-general-settings',
+            'thecdt-general-settings',
             __('Shortcode', 'the-countdown-timer'),
             array(__CLASS__, 'shortcode_meta_box'),
             self::$post_type_slug,
@@ -65,7 +67,7 @@ class PostType {
 
     public static function shortcode_meta_box($post)
     {
-        echo the_cdt_shortcode_input($post->ID);
+        echo thecdt_shortcode_input($post->ID);
     }
 }
 
@@ -77,7 +79,7 @@ add_action('admin_enqueue_scripts', function ($hook) {
     if ($hook === 'post-new.php' || $hook === 'post.php') {
         if (isset($post) && $post->post_type === PostType::$post_type_slug) {
 
-            the_cdt_load_scripts('editor');
+            thecdt_load_scripts('editor');
 
             $config = null;
 
@@ -117,11 +119,11 @@ add_filter(sprintf('manage_%s_posts_columns', PostType::$post_type_slug), functi
 // Fill custom columns
 add_action(sprintf('manage_%s_posts_custom_column', PostType::$post_type_slug), function ($column, $post_id) {
     if ($column === 'shortcode') {
-        echo the_cdt_shortcode_input($post_id);
+        echo thecdt_shortcode_input($post_id);
     }
 }, 10, 2);
 
-function the_cdt_shortcode_input($post_id) {
+function thecdt_shortcode_input($post_id) {
     $shortcode = sprintf("[the-countdown-timer id=%d]", $post_id);
     return sprintf(
         "<input type='text' readonly value='%s' class='large-text' onclick='this.select(); document.execCommand(\"copy\");'>",
