@@ -32,6 +32,6 @@ describe('The CDT EDITOR UI', () => {
       </Provider>
     );
 
-    expect(renderedEditor.container.querySelectorAll('.components-panel__body').length).toBe(7);
+    expect(renderedEditor.container.querySelectorAll('.components-tab-panel__tabs button').length).toBe(7);
   });
 });
