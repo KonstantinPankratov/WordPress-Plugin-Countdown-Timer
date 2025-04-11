@@ -67,7 +67,7 @@ class PostType {
 
     public static function shortcode_meta_box($post)
     {
-        echo thecdt_shortcode_input($post->ID);
+        thecdt_shortcode_input($post->ID);
     }
 }
 
@@ -119,13 +119,13 @@ add_filter(sprintf('manage_%s_posts_columns', PostType::$post_type_slug), functi
 // Fill custom columns
 add_action(sprintf('manage_%s_posts_custom_column', PostType::$post_type_slug), function ($column, $post_id) {
     if ($column === 'shortcode') {
-        echo thecdt_shortcode_input($post_id);
+        thecdt_shortcode_input($post_id);
     }
 }, 10, 2);
 
 function thecdt_shortcode_input($post_id) {
     $shortcode = sprintf("[the-countdown-timer id=%d]", $post_id);
-    return sprintf(
+    printf(
         "<input type='text' readonly value='%s' class='large-text' onclick='this.select(); document.execCommand(\"copy\");'>",
         esc_attr($shortcode)
     );
